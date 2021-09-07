@@ -13,10 +13,13 @@
 }
 
 .post h2 {
-  text-align:left;
+  text-align:center;
   margin-left:20px;
-  font-size:40px;
+  font-size:75%;
 }
+
+
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -47,3 +50,4 @@
     transform: rotate(360deg);
   }
 }
+
