@@ -106,8 +106,11 @@ export const redditApi = createApi({
         return formatData(response.data.children);
       }
     }),
-  }),
-})
+    getSearchTerm: builder.query({
+    query: (searchTerm)=>`/search.json?q=${searchTerm}`,
+    })
+  })
+});
 
 // Export hooks for usage in functional components
-export const { useGetPopularQuery } = redditApi;
+export const { useGetPopularQuery, useGetSearchTermQuery } = redditApi;

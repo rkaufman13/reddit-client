@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { redditApi } from './services/reddit';
-import { searchTermReducer } from './Features/searchBar/searchBarSlice';
+import searchTermReducer from './Features/searchBar/searchBarSlice';
 
 
 export const store = configureStore({

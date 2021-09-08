@@ -13,6 +13,7 @@ const SearchBar = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //dispatch(searchForTerm(searchTerm))
     dispatch(clearSearchTerm())
   }
 
