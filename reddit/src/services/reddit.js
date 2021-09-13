@@ -108,6 +108,9 @@ export const redditApi = createApi({
     }),
     getSearchTerm: builder.query({
     query: (searchTerm)=>`/search.json?q=${searchTerm}`,
+    transformResponse: (response) => {
+      return formatData(response.data.children);
+    }
     })
   })
 });

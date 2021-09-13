@@ -2,13 +2,13 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const searchTermSlice = createSlice({
   name: 'searchTerm',
-  initialState: '',
+  initialState: 'test',
   reducers: {
     setSearchTerm: (state,action)=>{
-    state.searchTerm = action.payload;
-    },
-    clearSearchTerm: (state,action)=>{
-    state.searchTerm="";
+   state.searchTerm = action.payload;
+        },
+    clearSearchTerm: (state)=>{
+    state.searchTerm =  "";
     },
   }
 });

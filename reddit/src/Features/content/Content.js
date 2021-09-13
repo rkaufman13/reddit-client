@@ -1,7 +1,8 @@
-
+import React, { useState } from "react";
 import { testData } from "../../services/data.js";
 import { Post, VideoPost, LoadingPost } from "./post/Post";
 import {
+  redditApi,
   useGetPopularQuery,
   useGetSearchTermQuery,
 } from "../../services/reddit.js";
@@ -10,25 +11,45 @@ import { selectSearchTerm } from "../searchBar/searchBarSlice";
 
 
 function Content() {
+  const [skip, setSkip] = React.useState(true)
+  const [skipMain,setSkipMain] = React.useState(false)
+  const searchTerm = useSelector(selectSearchTerm);
+const { data, error, isLoading, isFetching, refetch } = useGetPopularQuery({skipMain});
+ const {data: searchData, error:searchError, isLoading:searchIsLoading, isUninitialized:searchIsUninitialized, isFetching:searchIsFetching} = useGetSearchTermQuery(searchTerm, {skip}); 
 
-const { data, error, isLoading, isFetching, refetch } = useGetPopularQuery();
-  
-if (error) {
-   console.log(error)
-   return <div>An error has occured!</div>;}
+ const toggleSearch= ()=> {
+   setSkip(!skip)
+   setSkipMain(!skipMain)
+ }
 
-if (isLoading)
-  return [1, 2, 3, 4, 5].map((x, i) => {
-    return <LoadingPost key={i} />;
-  });
 let postData;
 
-// To use test data instead of making an API call, comment the lines above, from const all the way to this comment, and reassign the postData variable below from data to testData.
-
 postData = data;
-console.log(postData)
+return (
+<>
+<button onClick={toggleSearch}>Toggle Search</button>
+{error || searchError? ( 
+   <div>An error has occured!</div>
+   ):
+  isLoading || searchIsLoading || isFetching || searchIsFetching? (
+   [1, 2, 3, 4, 5].map((x) => {
+    return <LoadingPost key={x.toString()} />;
+  })
+  ):searchData? (
+    searchData.map((post, i) => {
+      if (post.content === "image") {
+        return <Post key={i} image_url={post.image_url} title={post.title} />;
+      }
+    
+      if (post.content === "reddit_video") {
+        return (
+          <VideoPost key={i} video_url={post.video_url} title={post.title} />
+        );
+      }
+    })):
+  data? (
 
-return postData.map((post, i) => {
+postData.map((post, i) => {
   if (post.content === "image") {
     return <Post key={i} image_url={post.image_url} title={post.title} />;
   }
@@ -38,8 +59,10 @@ return postData.map((post, i) => {
       <VideoPost key={i} video_url={post.video_url} title={post.title} />
     );
   }
-});
-  
+})):<></>
+ 
 }
-
+</>
+)
+}
 export default Content;
