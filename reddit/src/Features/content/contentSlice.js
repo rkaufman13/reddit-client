@@ -6,7 +6,7 @@ const showContentSlice = createSlice({
   reducers: {
       setContent: (state, action)=>{
           state.content=action.payload;
-      }
+      },
   }
 });
 
