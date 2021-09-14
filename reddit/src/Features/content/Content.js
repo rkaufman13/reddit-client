@@ -19,7 +19,7 @@ function Content() {
   
   if (result.error) return <div>An error has occured!</div>;
 
-  if (result.isLoading) return (
+  if (result.isLoading || result.isFetching) return (
     [1, 2, 3, 4, 5].map((x, i) => {
       return <LoadingPost key={i} />
     })
