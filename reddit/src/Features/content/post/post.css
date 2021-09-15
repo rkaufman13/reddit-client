@@ -14,6 +14,10 @@
 }
 
 #preview {
-  width: 50%;
+  width: 100%;
   height: auto;
+}
+
+.post {
+  font-size: 5vw;
 }

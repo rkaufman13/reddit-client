@@ -1,37 +1,39 @@
 import React from 'react';
 import './post.css';
-import backupImage from '../../../images/reddit-logo.png'
+import ReactPlayer from 'react-player';
 
 
 
-
-export const Post = (props) => {
-  const image_url = props.image_url ? props.image_url : backupImage
+export const RedditImage = (props) => {
   return (
     <div className="post">
+      <h2>{props.title}</h2>
       <img 
         id="preview" 
-        src={image_url} 
+        src={props.image_url} 
         alt="placeholder"/>
-        <h2>{props.title}</h2>
-      </div>
-  )
-}
-
-export const OembedPost = (props) => {
-  // Not currently in use. Something to thinkabout.
-}
-
-export const VideoPost = (props) => {
-  return (
-    <div className = 'post'>
-      <video width="320" height="240" controls>
-        <source src={props.video_url} type="video/mp4"></source>
-      </video>
-      <h2>{props.title}</h2>
     </div>
   )
-}
+};
+
+export const RedditVideo = (props) => {
+  return (
+    <div className='post'>
+      <h2>{props.title}</h2>
+      <ReactPlayer 
+        controls
+        url={props.video_url}
+        width='100%'
+        height='50%'
+        config={{
+          file: {
+            dashVersion: '4.0.1'
+          }
+        }}
+      />
+    </div>
+  )
+};
 
 export const LoadingPost = () => {
   return (
@@ -39,4 +41,4 @@ export const LoadingPost = () => {
       <div className="loader"></div>
     </div>
   )
-}
+};

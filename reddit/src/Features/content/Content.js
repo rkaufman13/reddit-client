@@ -1,7 +1,7 @@
 //todo: make each post its own Component
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { testData } from '../../services/data.js';
-import { Post, VideoPost, LoadingPost } from './post/Post';
+import { RedditImage, RedditVideo, LoadingPost } from './post/Post';
 import { useSelector } from 'react-redux'
 import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js'
 
@@ -32,8 +32,8 @@ function Content() {
   
   return (
     postData.map((post, i) => {
-      if (post.content === 'image' ) {
-        return <Post
+      if (post.content === 'reddit_image' ) {
+        return <RedditImage
           key={i}
           image_url={post.image_url}
           title={post.title}
@@ -41,7 +41,7 @@ function Content() {
       } 
       
       if (post.content === 'reddit_video') {
-        return <VideoPost 
+        return <RedditVideo
           key={i}
           video_url={post.video_url}
           title={post.title}
