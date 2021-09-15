@@ -4,18 +4,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 const contentType = post => {
   let type = '';
-  const media = post.data.media;
-  const preview = post.data.preview;
-  const thumbnail = post.data.thumbnail;
+  const redditVideo = post.data.is_video;
+  const redditImage = post.data.url.match(/https:\/\/i.redd.it\//);
 
-  if (media) {
-    type = Object.keys(media)[0];
-  } else if (preview) {
-    type = 'preview';
-  } else if (thumbnail.match(/https/)) {
-    type = 'thumbnail';
+  if (redditVideo) {
+    type = 'reddit_video';
+  } else if (redditImage) {
+    type = 'reddit_image';
+  } else {
+    return '';
   }
-  
   return type;
 };
 
@@ -25,49 +23,21 @@ const contentType = post => {
 
 // The PostVideoObject is returning an audio_url which is currently not being used in the VideoPost component. It seems a bit tricky from what I've read to connect a video html element to an audio html element. Will have to look further into that.
 
-const videoPostObject = post => {
-  const video_url = post.data.media.reddit_video.fallback_url;
-  const audio_url = video_url.replace(/DASH.*\.mp4/, 'DASH_audio.mp4');
+const redditVideo = post => {
+  const video_url = post.data.media.reddit_video.dash_url;
   return {
     title: post.data.title,
     content: 'reddit_video',
-    video_url: video_url,
-    audio_url: audio_url
+    video_url: video_url
   }
 };
 
-const oembedPostObject = post => {
-  const html = post.data.media.oembed.html;
+const redditImage = post => {
+  const image_url = post.data.url;
   return {
     title: post.data.title,
-    content: 'oembed',
-    html: html
-  }
-};
-
-const previewPostObject = post => {
-  let image_url = post.data.preview.images[0].source.url
-  return {
-    title: post.data.title,
-    content: 'image',
+    content: 'reddit_image',
     image_url: image_url
-  }
-};
-
-const thumbnailPostObject = post => {
-  let image_url = post.data.thumbnail
-  return {
-    title: post.data.title,
-    content: 'image',
-    image_url: image_url
-  }
-};
-
-const backupPostObject = post => {
-  return {
-    title: post.data.title,
-    content: 'image',
-    image_url: null
   }
 };
 
@@ -78,18 +48,14 @@ const formatData = posts => {
     let content = contentType(post);
   switch (content) {
     case 'reddit_video':
-      return videoPostObject(post);
-    case 'oembed':
-      return oembedPostObject(post);
-    case 'preview':
-      return previewPostObject(post);
-    case 'thumbnail':
-      return thumbnailPostObject(post);
-    default:
-      return backupPostObject(post);
+      return redditVideo(post);
+    case 'reddit_image':
+      return redditImage(post);
+    default: 
+      return '';
     }
   })
-}
+};
 
 // Using RTK Query, we can utilize a super abstraction and have no idea what's going on, lol. Hopefully over the next few weeks we can get more familiar with how it works and break it down.
 
@@ -101,13 +67,19 @@ export const redditApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://www.reddit.com' }),
   endpoints: (builder) => ({
     getPopular: builder.query({
-      query: () => '/r/popular.json?raw_json=1',
+      query: () => '/r/popular.json',
       transformResponse: (response) => {
         return formatData(response.data.children);
       }
     }),
-  }),
-})
+    getSearchTerm: builder.query({
+    query: (searchTerm)=>`/search.json?q=${searchTerm}`,
+    transformResponse: (response) => {
+      return formatData(response.data.children);
+    }
+    })
+  })
+});
 
 // Export hooks for usage in functional components
-export const { useGetPopularQuery } = redditApi;
+export const { useGetPopularQuery, useGetSearchTermQuery } = redditApi;
