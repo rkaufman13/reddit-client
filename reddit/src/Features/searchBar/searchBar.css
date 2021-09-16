@@ -17,3 +17,18 @@ input[type=text]:focus {
   width: 100%;
 }
 
+#searchbar {
+  display:flex;
+  align-items: stretch;
+}
+
+.clear-search {
+position: relative;
+height: 100%;
+width: 100%;
+}
+
+.clear-search button {
+  background-color:transparent;
+  color:black;
+}
