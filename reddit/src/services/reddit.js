@@ -28,7 +28,8 @@ const redditVideo = post => {
   return {
     title: post.data.title,
     content: 'reddit_video',
-    video_url: video_url
+    video_url: video_url,
+    subreddit:post.data.subreddit
   }
 };
 
@@ -37,7 +38,8 @@ const redditImage = post => {
   return {
     title: post.data.title,
     content: 'reddit_image',
-    image_url: image_url
+    image_url: image_url,
+    subreddit:post.data.subreddit
   }
 };
 

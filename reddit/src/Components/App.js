@@ -4,21 +4,9 @@ import SearchBar from '../Features/searchBar/SearchBar';
 import Filter from '../Features/filter/Filter';
 import Content from '../Features/content/Content'
 
-
 function App() {
   // The value of skipSearch is based on the value of skipMain. This allows us to not have two different variable in state. When one is on, the other should be off.
-  // const skipMain = useSelector(selectSkipMain);
-  // const skipSearch = !skipMain;
-  // const searchTerm = useSelector(selectSearchTerm)
-  // const popularResult = useGetPopularQuery('', {skipMain});
-  // const searchResult = useGetSearchTermQuery(searchTerm, {skipSearch})
-
-  // We can also determine the response based on the value of skipMain. This allows using the same conditional rendering below.
-  // const result = skipMain ? searchResult : popularResult;
-    
-let result = null;
-
-
+ 
 
   // App will be the first component rendered and will subsequenty render all components. If there is an asynchronous call, it will have to wait, so don't do that. We want to render a skeleton of the page before requests are made to fill our data. We can accomplish this by 
   //BY WHAT? I'M AT THE EDGE OF MY SEAT
@@ -27,9 +15,9 @@ let result = null;
     <div className="App">
       <Header/>
       <SearchBar/>
-      <Filter result={result}/>
+      <Filter/>
       <div className="Content">
-      <Content result={result}/>
+      <Content/>
       </div>      
     </div>
   );
