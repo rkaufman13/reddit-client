@@ -30,8 +30,8 @@ function Content() {
   
   
   return (
-
-    postData.map((post, i) => {
+<div className="row">
+    {postData.map((post, i) => {
       if (post.content === 'reddit_image' ) {
         return <RedditImage
           key={i}
@@ -47,7 +47,8 @@ function Content() {
           title={post.title}
         />
       } 
-    })
+    })}
+    </div>
   )
 }
 

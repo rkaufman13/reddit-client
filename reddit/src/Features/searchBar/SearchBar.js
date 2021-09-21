@@ -13,6 +13,7 @@ const SearchBar = () => {
   const onSearchTermChangeHandler = (e) => {
     const userInput = e.target.value;
     setTerm(userInput);
+    console.log(term)
   };
 
   // Then when the user submits, we can set the search term in the redux store. We will also set skipMain to true.
@@ -30,23 +31,23 @@ const SearchBar = () => {
   // user can clear local search state with the click of a button. Turn this into an x within the search bar in the future.
   const handleClearClick = () => {
     setTerm("");
+    dispatch(setSkipMain(false))
   };
 
   return (
     <div>
       <form id="search-container" onSubmit={handleSubmit}>
-<div id="searchbar">
+<div id="searchbar" className="row">
         <input
           id="search"
           type="text"
           value={term}
           onChange={onSearchTermChangeHandler}
           placeholder="Search"
-        />
-        <div className="clear-search"><button onClick={handleClearClick}>x</button></div>
+        /><button onClick={handleClearClick} className={term ? "btn btn-link":"btn btn-link collapse"}>clear search</button>
         </div>
       </form>
-      <button onClick={handleBackClick}>back to popular</button>
+      {/* <button onClick={handleBackClick}>back to popular</button> */}
     </div>
   );
 };

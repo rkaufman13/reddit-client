@@ -12,7 +12,7 @@ function App() {
   //BY WHAT? I'M AT THE EDGE OF MY SEAT
   //(In all seriousness IDK if this is an old comment or what but I think that if we continue to use RTK Query we shouldn't need to worry about page render time, since it looks like RTKQ will display the <Loading> components fairly quickly without us doing anything )
   return (
-    <div className="App">
+    <div className="App container">
       <Header/>
       <SearchBar/>
       <Filter/>
