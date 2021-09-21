@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSkipMain, setSearchTerm } from "./searchBarSlice";
-import "./searchBar.css";
+// import "./searchBar.css";
 
 const SearchBar = () => {
   // By handling searchBar state locally, we can set and clear the the term without affecting the Content component.
@@ -35,18 +35,18 @@ const SearchBar = () => {
   };
 
   return (
-    <div>
+    <div id="searchbar" className="row">
       <form id="search-container" onSubmit={handleSubmit}>
-<div id="searchbar" className="row">
+
         <input
           id="search"
           type="text"
           value={term}
           onChange={onSearchTermChangeHandler}
           placeholder="Search"
-        /><button onClick={handleClearClick} className={term ? "btn btn-link":"btn btn-link collapse"}>clear search</button>
-        </div>
+        />
       </form>
+      <button onClick={handleClearClick} className={term ? "btn btn-link":"btn btn-link collapse"}>clear search</button> 
       {/* <button onClick={handleBackClick}>back to popular</button> */}
     </div>
   );

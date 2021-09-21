@@ -14,8 +14,6 @@ function App() {
   return (
     <div className="App container">
       <Header/>
-      <SearchBar/>
-      <Filter/>
       <div className="Content">
       <Content/>
       </div>      
