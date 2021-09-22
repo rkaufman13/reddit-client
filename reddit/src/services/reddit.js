@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+const getDate = post => {
+  const date = new Date(post.data.created_utc * 1000)
+  const dateString = date.toDateString()
+  const timeString = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'})
+  return dateString + "  " +  timeString
+}
 
 const getGalleryImages = post => {
   let obj = post.data.media_metadata;
@@ -74,7 +80,8 @@ const parseData = posts => {
         score: post.data.score,
         num_comments: post.data.num_comments,
         subreddit: post.data.subreddit,
-        post_url: post.data.url
+        post_url: post.data.url,
+        date: getDate(post)
       },
       media: getMediaDetails(post),
     }
