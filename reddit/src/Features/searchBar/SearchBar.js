@@ -35,7 +35,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div id="searchbar" className="row">
+    <div id="searchbar" class="d-flex">
       <form id="search-container" onSubmit={handleSubmit}>
 
         <input

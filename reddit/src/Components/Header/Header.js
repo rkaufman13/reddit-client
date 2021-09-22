@@ -10,8 +10,8 @@ function Header() {
     return (
       <div className="row">
       <h1>Welcome to Calm Reddit</h1>
-<Navbar >
-<Container>
+<Navbar>
+<Container className="col-12 text-center">
   Filter:
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
