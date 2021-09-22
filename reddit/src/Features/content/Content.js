@@ -1,7 +1,7 @@
 //todo: make each post its own Component
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { testData } from '../../services/data.js';
-import { RedditImage, RedditVideo, LoadingPost } from './post/Post';
+import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
 import { useSelector } from 'react-redux'
 import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js'
 
@@ -31,23 +31,58 @@ function Content() {
   
   
   return (
+    <div id="content">
+    {
     postData.map((post, i) => {
-      if (post.content === 'reddit_image' ) {
+      if (['reddit_image', 'reddit_gif'].includes(post.media.type)) {
         return <RedditImage
           key={i}
-          image_url={post.image_url}
-          title={post.title}
+          info={post.info}
+          media_url={post.media.url}
         />
       } 
       
-      if (post.content === 'reddit_video') {
+      if (post.media.type === 'reddit_video') {
         return <RedditVideo
           key={i}
-          video_url={post.video_url}
-          title={post.title}
+          info={post.info}
+          media_url={post.media.url}
         />
-      } 
+      }
+
+      if (post.media.type === 'reddit_comments') {
+        return <RedditComments 
+          key={i}
+          info={post.info}
+        />
+      }
+
+      if (post.media.type === 'reddit_gallery') {
+        return <RedditGallery 
+          key={i}
+          info={post.info}
+          image_urls={post.media.image_urls}
+        />
+      }
+
+      if (post.media.type === 'oembed') {
+        return <Oembed 
+          key={i}
+          info={post.info}
+          html={post.media.html}
+        />
+      }
+
+      if (post.media.type === 'other') {
+        return <Other 
+          key={i}
+          info={post.info}
+          media_url={post.media.url}
+        />
+      }
     })
+    }
+    </div>
   )
 }
 
