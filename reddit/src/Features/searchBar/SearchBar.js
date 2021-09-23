@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setSkipMain, setSearchTerm } from './searchBarSlice'
 import './searchBar.css'
 
-const SearchBar = () => {
+export const SearchBar = () => {
   // By handling searchBar state locally, we can set and clear the the term without affecting the Content component.
   const [term, setTerm] = useState('')
 
@@ -33,20 +33,19 @@ const SearchBar = () => {
   }
 
   return (
-    <div>
-      <form id="search-container" onSubmit={handleSubmit}>
+    <div id="search-container">
+      <form id="form" onSubmit={handleSubmit}>
         <input
           id="search"
-          type="text"
+          type="search"
           value={term}
           onChange={onSearchTermChangeHandler}
           placeholder="Search"
         />
       </form>
-      <button onClick={handleBackClick}>back to popular</button>
-      <button onClick={handleClearClick}>clear search</button>
+      <button className="button" onClick={handleBackClick}>back to popular</button>
+      
     </div>
   );
 }
   
-export default SearchBar;

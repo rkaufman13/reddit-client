@@ -4,7 +4,7 @@ import { testData } from '../../services/data.js';
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
 import { useSelector } from 'react-redux'
 import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js'
-
+import './content.css'
 function Content() {
   // The value of skipSearch is based on the value of skipMain. This allows us to not have two different variable in state. When one is on, the other should be off.
   const skipMain = useSelector(selectSkipMain);
@@ -20,9 +20,13 @@ function Content() {
   if (result.error) return <div>An error has occured!</div>;
 
   if (result.isLoading || result.isFetching) return (
-    [1, 2, 3, 4, 5].map((x, i) => {
-      return <LoadingPost key={i} />
-    })
+    <div id="loading-content">
+      {
+      [...Array(25).keys()].map((x, i) => {
+        return <LoadingPost key={i} />
+      })
+    }
+    </div>
   )
 
   // To use test data instead of making an API call, comment the lines above, from const all the way to this comment, and reassign the postData variable below from data to testData.
