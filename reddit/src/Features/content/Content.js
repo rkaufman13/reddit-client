@@ -1,6 +1,5 @@
 //todo: make each post its own Component
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
-import { testData } from '../../services/data.js';
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
 import { useSelector } from 'react-redux'
 import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js'
@@ -22,8 +21,8 @@ function Content() {
   if (result.isLoading || result.isFetching) return (
     <div id="loading-content">
       {
-      [...Array(25).keys()].map((x, i) => {
-        return <LoadingPost key={i} />
+      [...Array(25).keys()].map(x => {
+        return <LoadingPost key={x} />
       })
     }
     </div>

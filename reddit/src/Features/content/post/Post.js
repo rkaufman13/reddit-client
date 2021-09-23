@@ -110,6 +110,7 @@ export const RedditGallery = (props) => {
             return (
               <Carousel.Item>
                 <img 
+                  key={i}
                   className="d-block w-100"
                   src={x}
                 />

@@ -27,11 +27,6 @@ export const SearchBar = () => {
     dispatch(setSkipMain(false));
   }
 
-  // user can clear local search state with the click of a button. Turn this into an x within the search bar in the future.
-  const handleClearClick = () => {
-    setTerm('');
-  }
-
   return (
     <div id="search-container">
       <form id="form" onSubmit={handleSubmit}>
