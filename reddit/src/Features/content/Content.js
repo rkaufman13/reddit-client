@@ -3,16 +3,30 @@ import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { testData } from '../../services/data.js';
 import { RedditImage, RedditVideo, LoadingPost } from './post/Post';
+import { selectFilter } from '../filter/filterSlice.js';
 
 function Content() {
   const skipMain = useSelector(selectSkipMain);
   const skipSearch = !skipMain;
   const searchTerm = useSelector(selectSearchTerm)
+  const filterTerm = useSelector(selectFilter)
   const popularResult = useGetPopularQuery('', {skipMain});
   const searchResult = useGetSearchTermQuery(searchTerm, {skipSearch})
-
+  const filteredResult = useGetPopularQuery('',{skip:skipMain,
+    selectFromResult: ({data}) => ({
+      data: data?.filter((post) => post.content === filterTerm)
+    }),
+    }
+  );
+  const filteredSearchedResult = useGetSearchTermQuery(searchTerm,{skip:skipSearch,
+    selectFromResult: ({data}) => ({
+      data: data?.filter((post) => post.content === filterTerm)
+    }),
+    }
+  );
   // We can also determine the response based on the value of skipMain. This allows using the same conditional rendering below.
-  const result = skipMain ? searchResult : popularResult;
+  //This ternary expression may be too hard to parse, but it was fun to write. It checks for the existence of both filter & skip as suggested and sets the value of data accordingly.
+  const result = !skipMain&&filterTerm ? filteredResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?filteredSearchedResult: popularResult;
     console.log(result)
 // let result = null;
 
