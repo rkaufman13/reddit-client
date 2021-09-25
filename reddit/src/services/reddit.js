@@ -99,6 +99,7 @@ const parseData = posts => {
         num_comments: abbreviateNumber(post.data.num_comments),
         subreddit_url: `https://reddit.com/${post.data.subreddit_name_prefixed}`,
         subreddit_prefix: post.data.subreddit_name_prefixed,
+        permalink: post.data.permalink,
         post_url: `https://reddit.com/${post.data.permalink}`,
         url: post.data.url,
         date_time: getDate(post)
@@ -107,6 +108,25 @@ const parseData = posts => {
     }
   })
 };
+
+const parseComments = data => {
+  const topLevelComments = data.filter(obj => obj.kind === 't1')
+  const comments = []
+  
+  topLevelComments.forEach((comment, i) => {
+    comments.push({})
+    comments[i][i] = comment.data.body
+    comments[i].replies = []
+    
+    if (comment.data.replies !== '') {
+      let replies = comment.data.replies.data.children.filter(reply => reply.kind === 't1')
+      replies.forEach(reply => {
+        comments[i].replies.push(reply.data.body)
+      })
+    }
+  })
+  return comments
+}
 
 export const redditApi = createApi({
   reducerPath: 'redditApi',
@@ -119,13 +139,19 @@ export const redditApi = createApi({
       }
     }),
     getSearchTerm: builder.query({
-    query: (searchTerm)=>`/search.json?q=${searchTerm}&raw_json=1`,
+    query: (searchTerm)=> `/search.json?q=${searchTerm}&raw_json=1`,
     transformResponse: (response) => {
       return parseData(response.data.children);
     }
+    }),
+    getComments: builder.query({
+      query: (permalink)=> `${permalink}.json`,
+      transformResponse: (response) => {
+        return parseComments(response[1].data.children)
+      }
     })
   })
 });
 
 // Export hooks for usage in functional components
-export const { useGetPopularQuery, useGetSearchTermQuery } = redditApi;
+export const { useGetPopularQuery, useGetSearchTermQuery, useGetCommentsQuery } = redditApi;
