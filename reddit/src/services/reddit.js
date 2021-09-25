@@ -52,9 +52,6 @@ const checkOembed = post => {
   }
 }
 
-
-
-
 const getMediaDetails = post => {
   let media = {}
   const oembed = checkOembed(post)

@@ -104,7 +104,7 @@ export const RedditImage = (props) => {
       </div>
       <PostFooter info={props.info} />
     </div>
-  )
+  );
 };
 
 export const RedditVideo = (props) => {
@@ -119,14 +119,14 @@ export const RedditVideo = (props) => {
         height='100%'
         config={{
           file: {
-            dashVersion: '4.0.1'
-          }
+            dashVersion: "4.0.1",
+          },
         }}
       />
       </div>
        <PostFooter info={props.info} />
     </div>
-  )
+  );
 };
 
 export const RedditComments = (props) => {

@@ -2,24 +2,28 @@
 export const testData = [
   {
     title: 'Roommate throws away dishes so he won’t have to do them (I bought all our dishes and silverware)',
-    content: 'image',
-    image_url: 'https://preview.redd.it/h8hn0sehrvl71.jpg?auto=webp&s=fe663746e5a1be84491b146df60b1aa33052d5ba'
+    content: 'reddit_image',
+    image_url: 'https://preview.redd.it/h8hn0sehrvl71.jpg?auto=webp&s=fe663746e5a1be84491b146df60b1aa33052d5ba',
+    tags: ['funny','picture','rant']
   },
   {
     title: 'A caddy hits a hole in one infront of Golf Legends',
     content: 'reddit_video',
     video_url: 'https://v.redd.it/l53gvhjlxvl71/DASH_720.mp4?source=fallback',
-    audio_url: 'https://v.redd.it/l53gvhjlxvl71/DASH_audio.mp4?source=fallback'
+    audio_url: 'https://v.redd.it/l53gvhjlxvl71/DASH_audio.mp4?source=fallback',
+    tags: ['sports','funny','video']
   },
   {
     title: 'Match Thread: 4th Test - India vs England, Day 5',
-    content: 'image',
-    image_url: 'https://external-preview.redd.it/fpeQTIqI5jvNRf0UfhbrrInstCUlqtHKExp2bYKFTWs.jpg?auto=webp&s=2ae9da41f6b822924c328e14c2169c33364d4162'
+    content: 'reddit_image',
+    image_url: 'https://external-preview.redd.it/fpeQTIqI5jvNRf0UfhbrrInstCUlqtHKExp2bYKFTWs.jpg?auto=webp&s=2ae9da41f6b822924c328e14c2169c33364d4162',
+    tags: ['sports']
   },
   {
     title: "Texas Gov. Greg Abbott's Approval Plummets as 52 Percent Believe State Is on Wrong Track",
     content: 'image',
-    image_url: 'https://external-preview.redd.it/OK7WCuCa21mf3j3mYms98PXJ8-pCWzmHng3DsyaUN3w.jpg?auto=webp&s=73a77e8a4a69568d038b5c198c417d5f859f8bfc'
+    image_url: 'https://external-preview.redd.it/OK7WCuCa21mf3j3mYms98PXJ8-pCWzmHng3DsyaUN3w.jpg?auto=webp&s=73a77e8a4a69568d038b5c198c417d5f859f8bfc',
+    tags: ['politics','news']
   },
   {
     title: '[Alfa Romeo Racing] Breaking news! @ValtteriBottas will join Alfa Romeo Racing ORLEN for the 2022 season and beyond, with the Finnish driver signing a multi-year deal with the Hinwil-based team.',
@@ -29,23 +33,27 @@ export const testData = [
   },
   {
     title: 'Acrylic painting I did this week titled "Highway Embers"',
-    content: 'image',
-    image_url: 'https://preview.redd.it/l3y4ipmx4vl71.png?auto=webp&s=1deb0d86d253b8131e51a068475aa347f77eefc5'
+    content: 'reddit_image',
+    image_url: 'https://preview.redd.it/l3y4ipmx4vl71.png?auto=webp&s=1deb0d86d253b8131e51a068475aa347f77eefc5',
+    tags: ['art','picture']
   },
   {
     title: 'In a word, Welcome to misery era!',
-    content: 'image',
-    image_url: 'https://preview.redd.it/fqv9l4sdovl71.jpg?auto=webp&s=23f7c3187a2181dc7c1777ddc2d983da40179751'
+    content: 'reddit_image',
+    image_url: 'https://preview.redd.it/fqv9l4sdovl71.jpg?auto=webp&s=23f7c3187a2181dc7c1777ddc2d983da40179751',
+    tags: ['funny']
   },
   {
     title: 'Mexico City to swap Columbus statue for one of indigenous woman',
-    content: 'image',
-    image_url: 'https://external-preview.redd.it/YSf02OckmFmPL2wM7zYSOB09-1qegShkvmblJhxFCfI.jpg?auto=webp&s=abecaaaa2d85380972b3ecb3d9af0cd43e4e3491'
+    content: 'reddit_image',
+    image_url: 'https://external-preview.redd.it/YSf02OckmFmPL2wM7zYSOB09-1qegShkvmblJhxFCfI.jpg?auto=webp&s=abecaaaa2d85380972b3ecb3d9af0cd43e4e3491',
+    tags: ['news']
   },
   {
     title: "It's Britney bitch",
-    content: 'image',
-    image_url: 'https://preview.redd.it/pzwnzdzqavl71.png?auto=webp&s=9cd1ddfab239fa57bd535192d6c6ec8d93ad1341'
+    content: 'reddit_image',
+    image_url: 'https://preview.redd.it/pzwnzdzqavl71.png?auto=webp&s=9cd1ddfab239fa57bd535192d6c6ec8d93ad1341',
+    tags: ['funny']
   },
   {
     title: 'Americans do you want universal healthcare? Why/why not?',
@@ -53,22 +61,24 @@ export const testData = [
   },
   {
     title: 'Yummy!',
-    content: 'image',
-    image_url: 'https://preview.redd.it/s2yc2ily4ul71.jpg?auto=webp&s=976f461bf493b77651b297a1c01d84d44f6f2be0'
+    content: 'reddit_image',
+    image_url: 'https://preview.redd.it/s2yc2ily4ul71.jpg?auto=webp&s=976f461bf493b77651b297a1c01d84d44f6f2be0',
+    tags: ['food','funny']
   },
   {
     title: 'Education should not be so expensive to avoid loans',
-    content: 'image',
-    image_url: 'https://preview.redd.it/ljzg4dqe3vl71.jpg?auto=webp&s=3637f652422686a60cfbe2038e37f2728b49ba07'
+    content: 'reddit_image',
+    image_url: 'https://preview.redd.it/ljzg4dqe3vl71.jpg?auto=webp&s=3637f652422686a60cfbe2038e37f2728b49ba07',
+    tags: ['politics']
   },
   {
     title: "Because that's what heroes do",
-    content: 'image',
+    content: 'reddit_image',
     image_url: 'https://preview.redd.it/sgnwt5wmxul71.jpg?auto=webp&s=320cbdaca983254cb23f309cee8d81c54ddd9eb3'
   },
   {
     title: 'Prepare for a big COVID spike in Vegas...',
-    content: 'image',
+    content: 'reddit_image',
     image_url: 'https://external-preview.redd.it/B8sRAz2rn1ynR-1pLlxQCoa3uFT0pO2YkyvrIjNKi0U.jpg?auto=webp&s=b9dde3fe6247b3fd65337d5616e348adf59544dd'
   },
   {
