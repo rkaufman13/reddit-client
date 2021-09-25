@@ -1,19 +1,12 @@
 import React from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Container from "react-bootstrap/Container";
-import SearchBar from "../../Features/searchBar/SearchBar";
+import { Navbar, Container } from 'react-bootstrap';
+import { SearchBar } from "../../Features/searchBar/SearchBar";
+import { Filter } from '../filter/Filter';
 import calmRedditLogo from "../../images/calm_reddit_logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./navbar.css";
-import { Filter } from '../filter/Filter';
-
 
 export const NavBar = () => {
-
-  
-
-
-
   return (
     <>
       <Navbar

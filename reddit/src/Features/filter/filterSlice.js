@@ -5,7 +5,7 @@ const filterSlice = createSlice({
   initialState: { types: [], filter: null },
   reducers: {
     setFilter: (state, action) => {
-      state.filter = action.payload
+      state.filter = state.filter === action.payload ? null : action.payload
     },
     setFilterTypes: (state, action) => {
       state.types = action.payload

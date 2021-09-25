@@ -1,6 +1,7 @@
 #filter-dropdown {
   background-color: rgba(0, 0, 0, 0);
   border: none;
+  margin-left: 20px;
 }
 
 #filter-dropdown:hover {
@@ -10,4 +11,8 @@
 #filter-dropdown:focus {
   border: none;
   box-shadow: none;
+}
+
+#dropdown-item:active {
+ background-color: black;
 }
