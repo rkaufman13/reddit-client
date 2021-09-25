@@ -31,7 +31,7 @@ function Content() {
     
 // let result = null;
 
-  if (result.error) return <div>An error has occured!</div>;
+  if (result.isError || result.rejected) return <div>An error has occured!</div>;
 
   if (result.isLoading || result.isFetching) return (
     <div id="loading-content">
@@ -42,6 +42,7 @@ function Content() {
     }
     </div>
   )
+  
   // To use test data instead of making an API call, comment the lines above, from const all the way to this comment, and reassign the postData variable below from data to testData.
   // Also now need to comment the lines in App.js that make the API call.
     const data = result.data;
@@ -56,7 +57,7 @@ function Content() {
         return <RedditImage
           key={i}
           info={post.info}
-          media_url={post.media.url}
+          media_url={post.media.url?post.media.url:null}
         />
       } 
       
@@ -64,7 +65,7 @@ function Content() {
         return <RedditVideo
           key={i}
           info={post.info}
-          media_url={post.media.url}
+          media_url={post.media.url?post.media.url:null}
         />
       }
 
@@ -95,7 +96,7 @@ function Content() {
         return <Other 
           key={i}
           info={post.info}
-          media_url={post.media.url}
+          media_url={post.media.url?post.media.url:null}
         />
       }
     })

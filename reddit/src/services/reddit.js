@@ -1,4 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import {types} from './mediatypes.js';
+
+
 
 const getDate = post => {
   const date = new Date(post.data.created_utc * 1000)
@@ -62,28 +65,27 @@ const getMediaDetails = post => {
   const redditComments = post.data.url.match(/https:\/\/www.reddit.com\/r\/.*\/comments/)
 
   if (redditVideo) {
-    media.type = 'reddit_video';
-    media.url = post.data.media.reddit_video.dash_url;
+   media = types.video;
+   media.url = post.data.media.reddit_video.dash_url;
   } else if (redditImage) {
-    media.type = 'reddit_image';
+    media = types.image;
     media.url = post.data.url;
   } else if (redditGif) {
-    media.type = 'reddit_gif';
+    media = types.gif;
     media.url = post.data.url;
   } else if (redditComments) {
-    media.type = 'reddit_comments';
+   media = types.comments;
     media.url = 'reddit_logo';
   } else if (redditGallery) {
-    media.type = 'reddit_gallery';
+media = types.gallery;
     media.image_urls = getGalleryImages(post)
   } else if (oembed) {
-    media.type = 'oembed';
+    media = types.oembed;
     media.html = post.data.media.oembed.html;
   } else {
-    media.type = 'other';
-    media.url = checkAvailableImages(post)
+    media = types.other;
+    media.url = checkAvailableImages(post);
   }
-  
   return media
 };
 

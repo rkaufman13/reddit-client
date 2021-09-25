@@ -35,7 +35,7 @@ export const SearchBar = () => {
   };
 
   return (
-    <div id="searchbar" class="d-flex">
+    <div id="searchbar" className="d-flex">
       <form id="search-container" onSubmit={handleSubmit}>
 
         <input
@@ -46,7 +46,7 @@ export const SearchBar = () => {
           placeholder="Search"
         />
       </form>
-      <button onClick={handleClearClick} className={term ? "btn btn-link":"btn btn-link collapse"}>clear search</button> 
+      <button onClick={handleClearClick} className={term ? "btn btn-link":"btn btn-link collapse"}>back to 'popular'</button> 
       {/* <button onClick={handleBackClick}>back to popular</button> */}
     </div>
   );
