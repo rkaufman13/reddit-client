@@ -1,44 +1,49 @@
-
-import { Navbar, Container, Nav, NavDropdown, InputGroup, FormControl} from 'react-bootstrap'
+import React from "react";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import SearchBar from "../../Features/searchBar/SearchBar";
+import { useSelector, useDispatch } from "react-redux";
+import { selectFilter, setFilter } from "../../Features/filter/filterSlice";
+import calmRedditLogo from '../../images/calm_reddit_logo.svg'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './navbar.css'
+import './navbar.css';
+
 export const NavBar = () => {
+  const filterTerm = useSelector(selectFilter);
+  const dispatch = useDispatch();
+
+  const clickHandler = (e) => {
+    const newFilter = e.target.value;
+    if (!filterTerm || newFilter != filterTerm) {
+      dispatch(setFilter(newFilter));
+    }
+    if (filterTerm === newFilter) {
+      dispatch(setFilter(""));
+    }
+  };
+
   return (
-//     <Navbar collapseOnSelect expand="sm"  bg="dark" variant="dark" fixed="top">
-//   <Container>
-//   <Navbar.Brand id="brand">React-Bootstrap</Navbar.Brand>
-  
-//   <InputGroup>
-//     <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-//     <FormControl
-//       placeholder="Username"
-//       aria-label="Username"
-//       aria-describedby="basic-addon1"
-//     />
-//   </InputGroup>
-  
-//   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-//   <Navbar.Collapse id="responsive-navbar-nav">
-//     <Nav className="me-auto">
-//       <Nav.Link href="#features">Features</Nav.Link>
-//       <Nav.Link href="#pricing">Pricing</Nav.Link>
-//       <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-//         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-//         <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-//         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-//         <NavDropdown.Divider />
-//         <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-//       </NavDropdown>
-//     </Nav>
-//     <Nav>
-//       <Nav.Link href="#deets">More deets</Nav.Link>
-//       <Nav.Link eventKey={2} href="#memes">
-//         Dank memes
-//       </Nav.Link>
-//     </Nav>
-//   </Navbar.Collapse>
-//   </Container>
-// </Navbar>
-<></>
+    <>
+      <Navbar id="basic-navbar-nav" className="navbar" bg="dark" variant="dark" fixed="top">
+      <Container id="container" fluid>
+        <Navbar.Brand id="brand"><img src={calmRedditLogo}/>  Calm Reddit</Navbar.Brand>
+          Filter:
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Nav>
+             <NavDropdown title="Filter">
+              <Nav.Link as="button" onClick={clickHandler} value="reddit_image">
+                Images
+              </Nav.Link>
+              <Nav.Link as="button" onClick={clickHandler} value="reddit_video">Movies</Nav.Link>
+              <Nav.Link as="button" onClick={clickHandler} value="reddit_gif">Gifs</Nav.Link>
+              </NavDropdown>
+              </Nav>
+      
+        <SearchBar />
+      </Container>
+    </Navbar>
+  </>
   )
 }

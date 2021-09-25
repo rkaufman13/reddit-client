@@ -4,9 +4,25 @@ const getDate = post => {
   const date = new Date(post.data.created_utc * 1000)
   const dateString = date.toDateString()
   const timeString = date.toLocaleTimeString('en-US', {hour12: true, hour: '2-digit', minute: '2-digit'})
-  return dateString + "  " +  timeString
+  return {
+    date: dateString,
+    time: timeString
+  }
 }
 
+const abbreviateNumber = value => {
+  if (value > 999) {
+    var suffixes = ["", "k", "m"];
+    var suffixNum = Math.floor((""+value).length/3);
+    var shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
+    if (shortValue % 1 !== 0) {
+        shortValue = shortValue.toFixed(1);
+    }
+    return shortValue+suffixes[suffixNum];
+  } else {
+    return value;
+  }
+}
 const getGalleryImages = post => {
   let obj = post.data.media_metadata;
   let image_urls = [];
@@ -35,7 +51,6 @@ const checkOembed = post => {
     return true
   }
 }
-
 
 const getMediaDetails = post => {
   let media = {}
@@ -77,16 +92,38 @@ const parseData = posts => {
     return {
       info: {
         title: post.data.title,
-        score: post.data.score,
-        num_comments: post.data.num_comments,
-        subreddit: post.data.subreddit,
-        post_url: post.data.url,
-        date: getDate(post)
+        score: abbreviateNumber(post.data.score),
+        num_comments: abbreviateNumber(post.data.num_comments),
+        subreddit_url: `https://reddit.com/${post.data.subreddit_name_prefixed}`,
+        subreddit_prefix: post.data.subreddit_name_prefixed,
+        permalink: post.data.permalink,
+        post_url: `https://reddit.com/${post.data.permalink}`,
+        url: post.data.url,
+        date_time: getDate(post)
       },
       media: getMediaDetails(post),
     }
   })
 };
+
+const parseComments = data => {
+  const topLevelComments = data.filter(obj => obj.kind === 't1')
+  const comments = []
+  
+  topLevelComments.forEach((comment, i) => {
+    comments.push({})
+    comments[i][i] = comment.data.body
+    comments[i].replies = []
+    
+    if (comment.data.replies !== '') {
+      let replies = comment.data.replies.data.children.filter(reply => reply.kind === 't1')
+      replies.forEach(reply => {
+        comments[i].replies.push(reply.data.body)
+      })
+    }
+  })
+  return comments
+}
 
 export const redditApi = createApi({
   reducerPath: 'redditApi',
@@ -99,13 +136,19 @@ export const redditApi = createApi({
       }
     }),
     getSearchTerm: builder.query({
-    query: (searchTerm)=>`/search.json?q=${searchTerm}&raw_json=1`,
+    query: (searchTerm)=> `/search.json?q=${searchTerm}&raw_json=1`,
     transformResponse: (response) => {
       return parseData(response.data.children);
     }
+    }),
+    getComments: builder.query({
+      query: (permalink)=> `${permalink}.json`,
+      transformResponse: (response) => {
+        return parseComments(response[1].data.children)
+      }
     })
   })
 });
 
 // Export hooks for usage in functional components
-export const { useGetPopularQuery, useGetSearchTermQuery } = redditApi;
+export const { useGetPopularQuery, useGetSearchTermQuery, useGetCommentsQuery } = redditApi;

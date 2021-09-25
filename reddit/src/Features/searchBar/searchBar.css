@@ -1,4 +1,4 @@
-input[type=text] {
+input[type=search] {
   width: 130px;
   box-sizing: border-box;
   border: 2px solid #ccc;
@@ -11,9 +11,35 @@ input[type=text] {
   padding: 12px 20px 12px 40px;
   -webkit-transition: width 0.4s ease-in-out;
   transition: width 0.4s ease-in-out;
+  margin: auto;
 }
 
-input[type=text]:focus {
+input[type=search]:focus {
   width: 100%;
+}
+
+#search-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+#search {
+  min-width: 150px;
+  
+}
+
+#form {
+  width: 40%;
+  display: flex;
+  justify-content: left;
+  margin-left: 10px;
+}
+
+
+
+.button {
+  border-radius: 4px;
+  background-color: #7289da;
 }
 
