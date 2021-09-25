@@ -1,7 +1,4 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {types} from './mediatypes.js';
-
-
 
 const getDate = post => {
   const date = new Date(post.data.created_utc * 1000)
@@ -65,28 +62,27 @@ const getMediaDetails = post => {
   const redditComments = post.data.url.match(/https:\/\/www.reddit.com\/r\/.*\/comments/)
 
   if (redditVideo) {
-   media = types.video;
+   media.type = 'reddit_video'
    media.url = post.data.media.reddit_video.dash_url;
   } else if (redditImage) {
-    media = types.image;
+    media.type = 'reddit_image'
     media.url = post.data.url;
   } else if (redditGif) {
-    media = types.gif;
+    media.type = 'reddit_gif'
     media.url = post.data.url;
   } else if (redditComments) {
-   media = types.comments;
+   media.type = 'reddit_comments'
     media.url = 'reddit_logo';
   } else if (redditGallery) {
-media = types.gallery;
+    media.type ='reddit_gallery'
     media.image_urls = getGalleryImages(post)
   } else if (oembed) {
-    media = types.oembed;
+    media.type = 'oembed'
     media.html = post.data.media.oembed.html;
   } else {
-    media = types.other;
+    media.type = 'other'
     media.url = checkAvailableImages(post);
   }
-  console.log(media)
   return media
 };
 
@@ -104,7 +100,7 @@ const parseData = posts => {
         url: post.data.url,
         date_time: getDate(post)
       },
-      media: getMediaDetails(post),
+      media: getMediaDetails(post)
     }
   })
 };

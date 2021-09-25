@@ -148,7 +148,7 @@ export const RedditGallery = (props) => {
           {
           props.image_urls.map((x, i) => {
             return (
-              <Carousel.Item>
+              <Carousel.Item key={i}>
                 <img 
                   key={i}
                   className="d-block w-100"
