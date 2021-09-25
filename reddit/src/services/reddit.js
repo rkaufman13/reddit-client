@@ -86,6 +86,7 @@ media = types.gallery;
     media = types.other;
     media.url = checkAvailableImages(post);
   }
+  console.log(media)
   return media
 };
 

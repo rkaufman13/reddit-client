@@ -11,7 +11,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./navbar.css";
 import { types } from "../../services/mediatypes";
 
-const categories = types;
+const categories = Object.entries(types).map(type=> {
+  return {
+    type:type[1].type,
+    displayName:type[1].displayName
+  }
+})
+console.log(categories);
 
 export const NavBar = () => {
   const filterTerm = useSelector(selectFilter);
@@ -48,14 +54,14 @@ export const NavBar = () => {
             <NavDropdown title="Filter">
               {categories.map((category, i) => {
                 return (
-                  <Nav.Link
+                  <NavDropdown.Item
                     as="button"
                     onClick={clickHandler}
                     key={i}
                     value={category.type}
                   >
                     {category.displayName}
-                  </Nav.Link>
+                  </NavDropdown.Item>
                 );
               })}
             </NavDropdown>
