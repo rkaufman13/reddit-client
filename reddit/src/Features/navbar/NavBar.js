@@ -4,6 +4,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import SearchBar from "../../Features/searchBar/SearchBar";
+import CalmToggle from "../../Features/calmToggle/CalmToggle"
 import { useSelector, useDispatch } from "react-redux";
 import { selectFilter, setFilter } from "../../Features/filter/filterSlice";
 import calmRedditLogo from "../../images/calm_reddit_logo.svg";
@@ -67,6 +68,7 @@ export const NavBar = () => {
             </NavDropdown>
           </Nav>
           <SearchBar />
+          <CalmToggle className="pull-right"/>
         </Container>
       </Navbar>
     </>
