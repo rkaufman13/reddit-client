@@ -11,8 +11,21 @@ import './post.css';
 import { Carousel, Modal } from 'react-bootstrap';
 import { useGetCommentsQuery } from '../../../services/reddit';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectCalmToggle } from '../../calmToggle/calmToggleSlice';
 
 const PostHeader = props => {
+  const calm = useSelector(selectCalmToggle);
+
+  if (calm) {
+    return (
+    <>
+      <div id="spacer"></div>
+      <h2>{props.info.title}</h2>
+    </>
+    )
+  }
+
   return (
     <div id="header">
       <div id="metadata">
@@ -51,9 +64,13 @@ const Comments = props => {
   )
 };
 
-
 const PostFooter = props => {
   const [show, setShow] = useState(false);
+  const calm = useSelector(selectCalmToggle);
+
+  if (calm) {
+    return <div id="spacer"></div>
+  }
 
   return (
     <>

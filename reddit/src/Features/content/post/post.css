@@ -138,6 +138,10 @@ span {
   margin-bottom: 10px;
 }
 
+#spacer{
+  height: 38px;
+}
+
 .lds-ripple {
   display: inline-block;
   position: relative;

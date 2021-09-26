@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar, Container } from 'react-bootstrap';
 import { SearchBar } from "../../Features/searchBar/SearchBar";
+import { CalmToggle } from '../../Features/calmToggle/CalmToggle';
 import { Filter } from '../filter/Filter';
 import calmRedditLogo from "../../images/calm_reddit_logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,6 +23,7 @@ export const NavBar = () => {
           </Navbar.Brand>
           <Filter />
           <SearchBar />
+          <CalmToggle />
         </Container>
       </Navbar>
     </>
