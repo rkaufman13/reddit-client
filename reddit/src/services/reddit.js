@@ -62,28 +62,28 @@ const getMediaDetails = post => {
   const redditComments = post.data.url.match(/https:\/\/www.reddit.com\/r\/.*\/comments/)
 
   if (redditVideo) {
-   media.type = 'reddit_video'
-   media.url = post.data.media.reddit_video.dash_url;
+    media.type = "Video";
+    media.url = post.data.media.reddit_video.dash_url;
   } else if (redditImage) {
-    media.type = 'reddit_image'
+    media.type = "Image";
     media.url = post.data.url;
   } else if (redditGif) {
-    media.type = 'reddit_gif'
+    media.type = "Gif";
     media.url = post.data.url;
   } else if (redditComments) {
-   media.type = 'reddit_comments'
-    media.url = 'reddit_logo';
+    media.type = "Discussion";
+    media.url = "reddit_logo";
   } else if (redditGallery) {
-    media.type ='reddit_gallery'
-    media.image_urls = getGalleryImages(post)
+    media.type = "Gallery";
+    media.image_urls = getGalleryImages(post);
   } else if (oembed) {
-    media.type = 'oembed'
+    media.type = "Social";
     media.html = post.data.media.oembed.html;
   } else {
-    media.type = 'other'
+    media.type="Other";
     media.url = checkAvailableImages(post);
   }
-  return media
+  return media;
 };
 
 const parseData = posts => {

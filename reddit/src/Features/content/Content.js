@@ -1,8 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js'
+import { useSelector, useDispatch } from 'react-redux';
+import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js';
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
-import './content.css'
+import './content.css';
 import { selectFilter, setFilterTypes } from '../filter/filterSlice.js';
 
 export const Content = () => {
@@ -12,8 +12,8 @@ export const Content = () => {
   const searchTerm = useSelector(selectSearchTerm);
   const filterTerm = useSelector(selectFilter);
   // const sortTerm = useSelector(selectSort);
-  const popularResult = useGetPopularQuery('', {skipMain});
-  const searchResult = useGetSearchTermQuery(searchTerm, {skipSearch});
+  const popularResult = useGetPopularQuery('', {skip: skipMain});
+  const searchResult = useGetSearchTermQuery(searchTerm, {skip: skipSearch});
   
   const result = skipMain ? searchResult : popularResult;
 
@@ -29,8 +29,8 @@ export const Content = () => {
     </div>
   )
 
-  const filterAndSort = data => {
-    dispatch(setFilterTypes([...new Set(data.map(x => x.media.type))]))
+ const filterAndSort = data => {
+    setTimeout(() => dispatch(setFilterTypes([...new Set(result.data.map(x => x.media.type))])), 0)
     let newData = data;
 
     // if (filter && sort) {
@@ -51,13 +51,13 @@ export const Content = () => {
     return newData;
   }
 
-  const postData = filterAndSort(result.data);
+  const postData = filterAndSort(result.data)
 
   return (
     <div id="content">
       {
       postData.map((post, i) => {
-        if (['reddit_image', 'reddit_gif'].includes(post.media.type)) {
+        if (['Image', 'Gif'].includes(post.media.type)) {
           return <RedditImage
             key={i}
             info={post.info}
@@ -65,7 +65,7 @@ export const Content = () => {
           />
         } 
         
-        if (post.media.type === 'reddit_video') {
+        if (post.media.type === 'Video') {
           return <RedditVideo
             key={i}
             info={post.info}
@@ -73,14 +73,14 @@ export const Content = () => {
           />
         }
 
-        if (post.media.type === 'reddit_comments') {
+        if (post.media.type === 'Discussion') {
           return <RedditComments 
             key={i}
             info={post.info}
           />
         }
 
-        if (post.media.type === 'reddit_gallery') {
+        if (post.media.type === 'Gallery') {
           return <RedditGallery 
             key={i}
             info={post.info}
@@ -88,7 +88,7 @@ export const Content = () => {
           />
         }
 
-        if (post.media.type === 'oembed') {
+        if (post.media.type === 'Social') {
           return <Oembed 
             key={i}
             info={post.info}
@@ -96,13 +96,14 @@ export const Content = () => {
           />
         }
 
-        if (post.media.type === 'other') {
+        if (post.media.type === 'Other') {
           return <Other 
             key={i}
             info={post.info}
             media_url={post.media.url?post.media.url:null}
           />
         }
+        return null
       })
       }
     </div>

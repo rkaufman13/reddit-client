@@ -29,7 +29,7 @@ const PostHeader = props => {
   return (
     <div id="header">
       <div id="metadata">
-        <img id="reddit-logo-small" src={redditLogo} />
+        <img id="reddit-logo-small" src={redditLogo} alt='' />
         <a href={props.info.subreddit_url} target="_blank" rel="noreferrer">{props.info.subreddit_prefix}</a>
         <span>Posted on {props.info.date_time.date} at {props.info.date_time.time}</span>
       </div>
@@ -80,24 +80,24 @@ const PostFooter = props => {
         </div>
         <div id="comments-votes">
           <div id="votes">
-            <img id="comments-votes-icon" src={upvotesIcon} />
+            <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
             {props.info.score}
           </div>
           <div id="comments" onClick={() => setShow(true)}>
-            <img id="comments-votes-icon" src={commentsIcon} />
+            <img id="comments-votes-icon" src={commentsIcon} alt='' />
             {props.info.num_comments}
           </div>
         </div>
       </div>
   
       <Modal
-      show={show}
-      onHide={() => setShow(false)}
-      onShow={() => console.log(props)}
-      contentClassName="custom-modal"
-      aria-labelledby="reddit-comments"
-      centered
-      scrollable
+        show={show}
+        onHide={() => setShow(false)}
+        onShow={() => console.log(props)}
+        contentClassName="custom-modal"
+        aria-labelledby="reddit-comments"
+        centered
+        scrollable
       >
         <Modal.Header closeVariant="white" closeButton></Modal.Header>
         <Modal.Body>
@@ -117,7 +117,7 @@ export const RedditImage = (props) => {
           className="media"
           id="reddit-image" 
           src={props.media_url} 
-          alt="placeholder"/>
+          alt=''/>
       </div>
       <PostFooter info={props.info} />
     </div>
@@ -150,7 +150,7 @@ export const RedditComments = (props) => {
   return (
     <div className="post reddit-comments">
       <PostHeader info={props.info} />
-      <img id="comments-post-logo" src={commentsPostLogo} />
+      <img id="comments-post-logo" src={commentsPostLogo} alt='' />
       <PostFooter info={props.info} />
     </div>
   )
@@ -170,7 +170,9 @@ export const RedditGallery = (props) => {
                   key={i}
                   className="d-block w-100"
                   src={x}
-                /></Carousel.Item>
+                  alt=''
+                />
+              </Carousel.Item>
             )
           })
           }
@@ -198,8 +200,8 @@ export const Other = (props) => {
     <div className="post other">
       <PostHeader info={props.info} />
       <div className="other-media">
-        <a id="external-link" href={props.info.url} target="_blank" rel="noreferrer">{props.info.url.slice(0, 25)}...<img src={linkIcon} /></a>
-        <img id={props.media_url === 'backup_image' ? "reddit-logo-medium" : "preview"} src={props.media_url === 'backup_image' ? redditLogo : props.media_url} />
+        <a id="external-link" href={props.info.url} target="_blank" rel="noreferrer">{props.info.url.slice(0, 25)}...<img src={linkIcon} alt=''/></a>
+        <img id={props.media_url === 'backup_image' ? "reddit-logo-medium" : "preview"} src={props.media_url === 'backup_image' ? redditLogo : props.media_url} alt=''/>
       </div>
       <PostFooter info={props.info} />
     </div>
@@ -209,7 +211,7 @@ export const Other = (props) => {
 export const LoadingPost = () => {
   return (
     <div id="loading-post">
-      <div class="lds-ripple"><div></div><div></div></div>
+      <div className="lds-ripple"><div></div><div></div></div>
     </div>
   )
 };
