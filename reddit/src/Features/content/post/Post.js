@@ -11,12 +11,26 @@ import './post.css';
 import { Carousel, Modal } from 'react-bootstrap';
 import { useGetCommentsQuery } from '../../../services/reddit';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectCalmToggle } from '../../calmToggle/calmToggleSlice';
+
 
 const PostHeader = props => {
+  const calm = useSelector(selectCalmToggle);
+
+  if (calm) {
+    return (
+    <>
+      <div id="spacer"></div>
+      <h2>{props.info.title}</h2>
+    </>
+    )
+  }
+
   return (
     <div id="header">
       <div id="metadata">
-        <img id="reddit-logo-small" src={redditLogo} />
+        <img id="reddit-logo-small" src={redditLogo} alt='' />
         <a href={props.info.subreddit_url} target="_blank" rel="noreferrer">{props.info.subreddit_prefix}</a>
         <span>Posted on {props.info.date_time.date} at {props.info.date_time.time}</span>
       </div>
@@ -26,8 +40,6 @@ const PostHeader = props => {
 };
 
 const Comments = props => {
-  console.log('here')
-  console.log(props.info.permalink)
   const comments = useGetCommentsQuery(props.info.permalink)
 
   if (comments.error) return <h1>There was an error!</h1>
@@ -51,9 +63,13 @@ const Comments = props => {
   )
 };
 
-
 const PostFooter = props => {
   const [show, setShow] = useState(false);
+  const calm = useSelector(selectCalmToggle);
+
+  if (calm) {
+    return <div id="spacer"></div>
+  }
 
   return (
     <>
@@ -63,24 +79,24 @@ const PostFooter = props => {
         </div>
         <div id="comments-votes">
           <div id="votes">
-            <img id="comments-votes-icon" src={upvotesIcon} />
-            {props.info.score}
+            <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
+            {props.info.display_upvotes}
           </div>
           <div id="comments" onClick={() => setShow(true)}>
-            <img id="comments-votes-icon" src={commentsIcon} />
-            {props.info.num_comments}
+            <img id="comments-votes-icon" src={commentsIcon} alt='' />
+            {props.info.display_comments}
           </div>
         </div>
       </div>
   
       <Modal
-      show={show}
-      onHide={() => setShow(false)}
-      onShow={() => console.log(props)}
-      contentClassName="custom-modal"
-      aria-labelledby="reddit-comments"
-      centered
-      scrollable
+        show={show}
+        onHide={() => setShow(false)}
+        onShow={() => console.log(props)}
+        contentClassName="custom-modal"
+        aria-labelledby="reddit-comments"
+        centered
+        scrollable
       >
         <Modal.Header closeVariant="white" closeButton></Modal.Header>
         <Modal.Body>
@@ -100,7 +116,7 @@ export const RedditImage = (props) => {
           className="media"
           id="reddit-image" 
           src={props.media_url} 
-          alt="placeholder"/>
+          alt=''/>
       </div>
       <PostFooter info={props.info} />
     </div>
@@ -133,7 +149,7 @@ export const RedditComments = (props) => {
   return (
     <div className="post reddit-comments">
       <PostHeader info={props.info} />
-      <img id="comments-post-logo" src={commentsPostLogo} />
+      <img id="comments-post-logo" src={commentsPostLogo} alt='' />
       <PostFooter info={props.info} />
     </div>
   )
@@ -148,12 +164,14 @@ export const RedditGallery = (props) => {
           {
           props.image_urls.map((x, i) => {
             return (
-              <Carousel.Item>
+              <Carousel.Item key={i}>
                 <img 
                   key={i}
                   className="d-block w-100"
                   src={x}
-                /></Carousel.Item>
+                  alt=''
+                />
+              </Carousel.Item>
             )
           })
           }
@@ -181,8 +199,8 @@ export const Other = (props) => {
     <div className="post other">
       <PostHeader info={props.info} />
       <div className="other-media">
-        <a id="external-link" href={props.info.url} target="_blank" rel="noreferrer">{props.info.url.slice(0, 25)}...<img src={linkIcon} /></a>
-        <img id={props.media_url === 'backup_image' ? "reddit-logo-medium" : "preview"} src={props.media_url === 'backup_image' ? redditLogo : props.media_url} />
+        <a id="external-link" href={props.info.url} target="_blank" rel="noreferrer">{props.info.url.slice(0, 25)}...<img src={linkIcon} alt=''/></a>
+        <img id={props.media_url === 'backup_image' ? "reddit-logo-medium" : "preview"} src={props.media_url === 'backup_image' ? redditLogo : props.media_url} alt=''/>
       </div>
       <PostFooter info={props.info} />
     </div>
@@ -192,7 +210,7 @@ export const Other = (props) => {
 export const LoadingPost = () => {
   return (
     <div id="loading-post">
-      <div class="lds-ripple"><div></div><div></div></div>
+      <div className="lds-ripple"><div></div><div></div></div>
     </div>
   )
 };

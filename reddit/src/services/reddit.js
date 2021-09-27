@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import numeral from 'numeral';
 
 const getDate = post => {
   const date = new Date(post.data.created_utc * 1000)
@@ -10,19 +11,14 @@ const getDate = post => {
   }
 }
 
-const abbreviateNumber = value => {
-  if (value > 999) {
-    var suffixes = ["", "k", "m"];
-    var suffixNum = Math.floor((""+value).length/3);
-    var shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
-    if (shortValue % 1 !== 0) {
-        shortValue = shortValue.toFixed(1);
-    }
-    return shortValue+suffixes[suffixNum];
-  } else {
-    return value;
+const abbreviateNumber = num => {
+  if (num > 999) {
+    return numeral(num).format('0.0a')
   }
+
+  return num
 }
+
 const getGalleryImages = post => {
   let obj = post.data.media_metadata;
   let image_urls = [];
@@ -62,29 +58,28 @@ const getMediaDetails = post => {
   const redditComments = post.data.url.match(/https:\/\/www.reddit.com\/r\/.*\/comments/)
 
   if (redditVideo) {
-    media.type = 'reddit_video';
+    media.type = "Video";
     media.url = post.data.media.reddit_video.dash_url;
   } else if (redditImage) {
-    media.type = 'reddit_image';
+    media.type = "Image";
     media.url = post.data.url;
   } else if (redditGif) {
-    media.type = 'reddit_gif';
+    media.type = "Gif";
     media.url = post.data.url;
   } else if (redditComments) {
-    media.type = 'reddit_comments';
-    media.url = 'reddit_logo';
+    media.type = "Discussion";
+    media.url = "reddit_logo";
   } else if (redditGallery) {
-    media.type = 'reddit_gallery';
-    media.image_urls = getGalleryImages(post)
+    media.type = "Gallery";
+    media.image_urls = getGalleryImages(post);
   } else if (oembed) {
-    media.type = 'oembed';
+    media.type = "Social";
     media.html = post.data.media.oembed.html;
   } else {
-    media.type = 'other';
-    media.url = checkAvailableImages(post)
+    media.type="Other";
+    media.url = checkAvailableImages(post);
   }
-  
-  return media
+  return media;
 };
 
 const parseData = posts => {
@@ -92,16 +87,19 @@ const parseData = posts => {
     return {
       info: {
         title: post.data.title,
-        score: abbreviateNumber(post.data.score),
-        num_comments: abbreviateNumber(post.data.num_comments),
+        upvotes: post.data.score,
+        display_upvotes: abbreviateNumber(post.data.score),
+        comments: post.data.num_comments,
+        display_comments: abbreviateNumber(post.data.num_comments),
         subreddit_url: `https://reddit.com/${post.data.subreddit_name_prefixed}`,
         subreddit_prefix: post.data.subreddit_name_prefixed,
         permalink: post.data.permalink,
         post_url: `https://reddit.com/${post.data.permalink}`,
         url: post.data.url,
-        date_time: getDate(post)
+        date_time: getDate(post),
+        date: post.data.created_utc
       },
-      media: getMediaDetails(post),
+      media: getMediaDetails(post)
     }
   })
 };

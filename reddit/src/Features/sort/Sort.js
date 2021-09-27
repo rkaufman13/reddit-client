@@ -1,30 +1,26 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from 'react';
-import { setFilter, selectFilterTypes, selectFilter } from "./filterSlice";
+import { selectSort, setSort } from "./sortSlice";
 import { Dropdown } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import './filter.css'
+import './sort.css'
 
-export const Filter = () => {
-  const activeType = useSelector(selectFilter);
+export const Sort = () => {
+  const activeType = useSelector(selectSort);
   const dispatch = useDispatch();
-  const types = useSelector(selectFilterTypes);
 
   const clickHandler = (e) => {
-    const newFilter = e.target.value;
-    dispatch(setFilter(newFilter));
+    const sortTerm = e.target.value;
+    dispatch(setSort(sortTerm));
   };
-
-
 
   return (
     <Dropdown>
-      <Dropdown.Toggle id="filter-dropdown">
-        Filter
+      <Dropdown.Toggle id="sort-dropdown">
+        Sort
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {['Image', 'Video', 'Gif', 'Gallery', 'Social', 'Other'].map((type, i) => {
+        {['date', 'upvotes', 'comments'].map((type, i) => {
           return (
             <Dropdown.Item 
               as="button"
@@ -32,9 +28,8 @@ export const Filter = () => {
               key={i}
               value={type}
               active={activeType === type}
-              disabled={!types.includes(type)}
             >
-              {type}
+              {`${type[0].toUpperCase()}${type.slice(1)}`}
             </Dropdown.Item>
           )
         })}
@@ -42,6 +37,3 @@ export const Filter = () => {
     </Dropdown>
   )
 }
-
-
-

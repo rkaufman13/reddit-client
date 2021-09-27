@@ -129,8 +129,6 @@ span {
   background-color: #23272a;
 }
 
-
-
 #comment{
   font-weight: bold;
 }
@@ -138,6 +136,10 @@ span {
 #replies{
   margin-left: 40px;
   margin-bottom: 10px;
+}
+
+#spacer{
+  height: 38px;
 }
 
 .lds-ripple {

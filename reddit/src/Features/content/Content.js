@@ -1,37 +1,44 @@
-import { useSelector } from 'react-redux'
-import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js'
+import { useSelector,useDispatch } from 'react-redux';
+import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js';
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
-import './content.css'
-import { selectFilter } from '../filter/filterSlice.js';
+import './content.css';
+import { selectFilter, setFilterTypes } from '../filter/filterSlice.js';
+import { selectSort } from '../sort/sortSlice.js';
 
-function Content() {
+const filterAndSort = (data, filterTerm, sortTerm) => {
+  
+  if (filterTerm && sortTerm) {
+    return data.filter(x => x.media.type === filterTerm).sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+  }
+
+  if (filterTerm) {
+    return data.filter(x => x.media.type === filterTerm)
+  }
+
+  if (sortTerm) {
+    return data.slice().sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+  }
+
+  return data
+}
+
+export const Content = () => {
+  const dispatch = useDispatch();
   const skipMain = useSelector(selectSkipMain);
   const skipSearch = !skipMain;
-  const searchTerm = useSelector(selectSearchTerm)
-  const filterTerm = useSelector(selectFilter)
-  const popularResult = useGetPopularQuery('', {skipMain});
-  const searchResult = useGetSearchTermQuery(searchTerm, {skipSearch})
-  const filteredResult = useGetPopularQuery('',{skip:skipMain,
-    selectFromResult: ({data}) => ({
-      data: data?.filter((post) => post.media?.type === filterTerm)
-    }),
-    }
-  );
-  const filteredSearchedResult = useGetSearchTermQuery(searchTerm,{skip:skipSearch,
-    selectFromResult: ({data}) => ({
-      data: data?.filter((post) => post.media.type === filterTerm)
-    }),
-    }
-  );
-  // We can also determine the response based on the value of skipMain. This allows using the same conditional rendering below.
-  //This ternary expression may be too hard to parse, but it was fun to write. It checks for the existence of both filter & skip as suggested and sets the value of data accordingly.
-  const result = !skipMain&&filterTerm ? filteredResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?filteredSearchedResult: popularResult;
-    console.log(result)
-    
-// let result = null;
+  const searchTerm = useSelector(selectSearchTerm);
+  const filterTerm = useSelector(selectFilter);
+  const sortTerm = useSelector(selectSort);
+  const popularResult = useGetPopularQuery('', {skip: skipMain});
+  const searchResult = useGetSearchTermQuery(searchTerm, {skip: skipSearch});
+  
 
-  if (result.error) return <div>An error has occured!</div>;
+  dispatch(setFilterTypes([...new Set(popularResult.data?.map(x => x.media.type))]));
+  
+  const result = !skipMain ? popularResult : searchResult;
+  
+  if (result.isError || result.rejected) return <div>An error has occured!</div>;
 
   if (result.isLoading || result.isFetching) return (
     <div id="loading-content">
@@ -42,66 +49,62 @@ function Content() {
     }
     </div>
   )
-  // To use test data instead of making an API call, comment the lines above, from const all the way to this comment, and reassign the postData variable below from data to testData.
-  // Also now need to comment the lines in App.js that make the API call.
-    const data = result.data;
-  const postData = data;
-  
-  
+
+  const postData = filterAndSort(result.data, filterTerm, sortTerm)
+
   return (
-    <div id="content" className="row">
-    {
-    postData.map((post, i) => {
-      if (['reddit_image', 'reddit_gif'].includes(post.media.type)) {
-        return <RedditImage
-          key={i}
-          info={post.info}
-          media_url={post.media.url}
-        />
-      } 
-      
-      if (post.media.type === 'reddit_video') {
-        return <RedditVideo
-          key={i}
-          info={post.info}
-          media_url={post.media.url}
-        />
-      }
+    <div id="content">
+      {
+      postData.map((post, i) => {
+        if (['Image', 'Gif'].includes(post.media.type)) {
+          return <RedditImage
+            key={i}
+            info={post.info}
+            media_url={post.media.url?post.media.url:null}
+          />
+        } 
+        
+        if (post.media.type === 'Video') {
+          return <RedditVideo
+            key={i}
+            info={post.info}
+            media_url={post.media.url?post.media.url:null}
+          />
+        }
 
-      if (post.media.type === 'reddit_comments') {
-        return <RedditComments 
-          key={i}
-          info={post.info}
-        />
-      }
+        if (post.media.type === 'Discussion') {
+          return <RedditComments 
+            key={i}
+            info={post.info}
+          />
+        }
 
-      if (post.media.type === 'reddit_gallery') {
-        return <RedditGallery 
-          key={i}
-          info={post.info}
-          image_urls={post.media.image_urls}
-        />
-      }
+        if (post.media.type === 'Gallery') {
+          return <RedditGallery 
+            key={i}
+            info={post.info}
+            image_urls={post.media.image_urls}
+          />
+        }
 
-      if (post.media.type === 'oembed') {
-        return <Oembed 
-          key={i}
-          info={post.info}
-          html={post.media.html}
-        />
-      }
+        if (post.media.type === 'Social') {
+          return <Oembed 
+            key={i}
+            info={post.info}
+            html={post.media.html}
+          />
+        }
 
-      if (post.media.type === 'other') {
-        return <Other 
-          key={i}
-          info={post.info}
-          media_url={post.media.url}
-        />
+        if (post.media.type === 'Other') {
+          return <Other 
+            key={i}
+            info={post.info}
+            media_url={post.media.url?post.media.url:null}
+          />
+        }
+        return null
+      })
       }
-    })
-    }
     </div>
   )
 }
-
-export default Content;

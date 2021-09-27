@@ -1,45 +1,11 @@
-input[type=search] {
-  width: 130px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  background-color: white;
-  background-image: url('../../images/search_black_24dp.svg');
-  background-position: 10px 10px; 
-  background-repeat: no-repeat;
-  padding: 12px 20px 12px 40px;
-  -webkit-transition: width 0.4s ease-in-out;
-  transition: width 0.4s ease-in-out;
-  margin: auto;
-}
-
-input[type=search]:focus {
-  width: 100%;
-}
-
-#search-container {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-
-#search {
-  min-width: 150px;
-  
-}
-
-#form {
-  width: 40%;
-  display: flex;
-  justify-content: left;
-  margin-left: 10px;
-}
-
-
-
-.button {
-  border-radius: 4px;
+#searchbar #button {
   background-color: #7289da;
+  border-radius: 2px;
 }
+
+#searchbar {
+  margin-left: 20px;
+}
+
+
 
