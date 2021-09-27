@@ -13,6 +13,7 @@ import { useGetCommentsQuery } from '../../../services/reddit';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCalmToggle } from '../../calmToggle/calmToggleSlice';
+import numeral from 'numeral'
 
 const PostHeader = props => {
   const calm = useSelector(selectCalmToggle);
@@ -39,8 +40,6 @@ const PostHeader = props => {
 };
 
 const Comments = props => {
-  console.log('here')
-  console.log(props.info.permalink)
   const comments = useGetCommentsQuery(props.info.permalink)
 
   if (comments.error) return <h1>There was an error!</h1>
@@ -81,11 +80,11 @@ const PostFooter = props => {
         <div id="comments-votes">
           <div id="votes">
             <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
-            {props.info.score}
+            {numeral(props.info.upvotes).format('0.0a')}
           </div>
           <div id="comments" onClick={() => setShow(true)}>
             <img id="comments-votes-icon" src={commentsIcon} alt='' />
-            {props.info.num_comments}
+            {numeral(props.info.comments).format('0.0a')}
           </div>
         </div>
       </div>

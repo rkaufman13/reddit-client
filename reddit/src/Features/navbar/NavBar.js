@@ -3,6 +3,7 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 import { SearchBar } from "../../Features/searchBar/SearchBar";
 import { CalmToggle } from '../../Features/calmToggle/CalmToggle';
 import { Filter } from '../filter/Filter';
+import { Sort } from "../sort/Sort";
 import calmRedditLogo from "../../images/calm_reddit_logo.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./navbar.css";
@@ -27,6 +28,7 @@ export const NavBar = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Filter />
+              <Sort />
               <CalmToggle />
             </Nav>
           </Navbar.Collapse>

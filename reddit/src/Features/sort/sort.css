@@ -1,0 +1,18 @@
+#sort-dropdown {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  margin-left: 20px;
+}
+
+#sort-dropdown:hover {
+  border: none;
+}
+
+#sort-dropdown:focus {
+  border: none;
+  box-shadow: none;
+}
+
+#dropdown-item:active {
+ background-color: black;
+}

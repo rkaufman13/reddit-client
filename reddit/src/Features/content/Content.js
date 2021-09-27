@@ -4,6 +4,24 @@ import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
 import './content.css';
 import { selectFilter, setFilterTypes } from '../filter/filterSlice.js';
+import { selectSort } from '../sort/sortSlice.js';
+
+const filterAndSort = (data, filterTerm, sortTerm) => {
+  
+  if (filterTerm && sortTerm) {
+    return data?.filter(x => x.media.type === filterTerm).sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+  }
+
+  if (filterTerm) {
+    return data?.filter(x => x.media.type === filterTerm)
+  }
+
+  if (sortTerm) {
+    return data?.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+  }
+
+  return data
+}
 
 export const Content = () => {
   const dispatch = useDispatch();
@@ -11,27 +29,26 @@ export const Content = () => {
   const skipSearch = !skipMain;
   const searchTerm = useSelector(selectSearchTerm);
   const filterTerm = useSelector(selectFilter);
-  // const sortTerm = useSelector(selectSort);
+  const sortTerm = useSelector(selectSort);
   const popularResult = useGetPopularQuery('', {skip: skipMain});
   const searchResult = useGetSearchTermQuery(searchTerm, {skip: skipSearch});
-  const filteredResult = useGetPopularQuery('',{skip:skipMain,
+  const determineResult = useGetPopularQuery('',{skip:skipMain,
     selectFromResult: ({data}) => ({
-      data: data?.filter((post) => post.media?.type === filterTerm)
+      data: filterAndSort(data, filterTerm, sortTerm)
     }),
     }
   );
-  const filteredSearchedResult = useGetSearchTermQuery(searchTerm,{skip:skipSearch,
+  const determineSearchResult = useGetSearchTermQuery(searchTerm,{skip:skipSearch,
     selectFromResult: ({data}) => ({
-      data: data?.filter((post) => post.media.type === filterTerm)
+      data: filterAndSort(data, filterTerm, sortTerm)
     }),
     }
   );
 
   dispatch(setFilterTypes([...new Set(popularResult.data?.map(x => x.media.type))]));
   
-  const result = !skipMain&&filterTerm ? filteredResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?filteredSearchedResult: popularResult;
+  const result = !skipMain&&filterTerm ? determineResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?determineSearchResult: popularResult;
   
-
   if (result.isError || result.rejected) return <div>An error has occured!</div>;
 
   if (result.isLoading || result.isFetching) return (
@@ -44,8 +61,7 @@ export const Content = () => {
     </div>
   )
 
-  const data = result.data;
-  const postData = data;
+  const postData = result.data;
 
   return (
     <div id="content">

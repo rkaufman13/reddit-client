@@ -91,14 +91,15 @@ const parseData = posts => {
     return {
       info: {
         title: post.data.title,
-        score: abbreviateNumber(post.data.score),
-        num_comments: abbreviateNumber(post.data.num_comments),
+        upvotes: post.data.score,
+        comments: post.data.num_comments,
         subreddit_url: `https://reddit.com/${post.data.subreddit_name_prefixed}`,
         subreddit_prefix: post.data.subreddit_name_prefixed,
         permalink: post.data.permalink,
         post_url: `https://reddit.com/${post.data.permalink}`,
         url: post.data.url,
-        date_time: getDate(post)
+        date_time: getDate(post),
+        date: post.data.created_utc
       },
       media: getMediaDetails(post)
     }
