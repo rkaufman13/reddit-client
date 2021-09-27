@@ -1,20 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from 'react';
-import { setFilter, selectFilterTypes } from "./filterSlice";
+import { setFilter, selectFilterTypes, selectFilter } from "./filterSlice";
 import { Dropdown } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './filter.css'
 
 export const Filter = () => {
-  const [activeType, setActiveType] = useState(null);
+  const activeType = useSelector(selectFilter);
   const dispatch = useDispatch();
   const types = useSelector(selectFilterTypes);
 
   const clickHandler = (e) => {
     const newFilter = e.target.value;
     dispatch(setFilter(newFilter));
-    setActiveType(newFilter);
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js';
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
@@ -6,7 +6,7 @@ import './content.css';
 import { selectFilter, setFilterTypes } from '../filter/filterSlice.js';
 
 export const Content = () => {
-  
+  const dispatch = useDispatch();
   const skipMain = useSelector(selectSkipMain);
   const skipSearch = !skipMain;
   const searchTerm = useSelector(selectSearchTerm);
@@ -26,6 +26,8 @@ export const Content = () => {
     }),
     }
   );
+
+  dispatch(setFilterTypes([...new Set(popularResult.data?.map(x => x.media.type))]));
   
   const result = !skipMain&&filterTerm ? filteredResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?filteredSearchedResult: popularResult;
   
