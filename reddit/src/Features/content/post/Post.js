@@ -13,7 +13,7 @@ import { useGetCommentsQuery } from '../../../services/reddit';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCalmToggle } from '../../calmToggle/calmToggleSlice';
-import numeral from 'numeral'
+
 
 const PostHeader = props => {
   const calm = useSelector(selectCalmToggle);
@@ -80,11 +80,11 @@ const PostFooter = props => {
         <div id="comments-votes">
           <div id="votes">
             <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
-            {numeral(props.info.upvotes).format('0.0a')}
+            {props.info.display_upvotes}
           </div>
           <div id="comments" onClick={() => setShow(true)}>
             <img id="comments-votes-icon" src={commentsIcon} alt='' />
-            {numeral(props.info.comments).format('0.0a')}
+            {props.info.display_comments}
           </div>
         </div>
       </div>

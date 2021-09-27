@@ -9,15 +9,15 @@ import { selectSort } from '../sort/sortSlice.js';
 const filterAndSort = (data, filterTerm, sortTerm) => {
   
   if (filterTerm && sortTerm) {
-    return data?.filter(x => x.media.type === filterTerm).sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+    return data.filter(x => x.media.type === filterTerm).sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
   }
 
   if (filterTerm) {
-    return data?.filter(x => x.media.type === filterTerm)
+    return data.filter(x => x.media.type === filterTerm)
   }
 
   if (sortTerm) {
-    return data?.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+    return data.slice().sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
   }
 
   return data
@@ -32,22 +32,11 @@ export const Content = () => {
   const sortTerm = useSelector(selectSort);
   const popularResult = useGetPopularQuery('', {skip: skipMain});
   const searchResult = useGetSearchTermQuery(searchTerm, {skip: skipSearch});
-  const determineResult = useGetPopularQuery('',{skip:skipMain,
-    selectFromResult: ({data}) => ({
-      data: filterAndSort(data, filterTerm, sortTerm)
-    }),
-    }
-  );
-  const determineSearchResult = useGetSearchTermQuery(searchTerm,{skip:skipSearch,
-    selectFromResult: ({data}) => ({
-      data: filterAndSort(data, filterTerm, sortTerm)
-    }),
-    }
-  );
+  
 
   dispatch(setFilterTypes([...new Set(popularResult.data?.map(x => x.media.type))]));
   
-  const result = !skipMain&&filterTerm ? determineResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?determineSearchResult: popularResult;
+  const result = !skipMain ? popularResult : searchResult;
   
   if (result.isError || result.rejected) return <div>An error has occured!</div>;
 
@@ -61,7 +50,7 @@ export const Content = () => {
     </div>
   )
 
-  const postData = result.data;
+  const postData = filterAndSort(result.data, filterTerm, sortTerm)
 
   return (
     <div id="content">
