@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectSkipMain, selectSearchTerm } from '../searchBar/searchBarSlice.js';
 import { useGetPopularQuery, useGetSearchTermQuery } from "../../services/reddit.js";
 import { RedditImage, RedditVideo, RedditComments, RedditGallery, Oembed, Other, LoadingPost } from './post/Post';
@@ -6,7 +6,7 @@ import './content.css';
 import { selectFilter, setFilterTypes } from '../filter/filterSlice.js';
 
 export const Content = () => {
-  const dispatch = useDispatch();
+  
   const skipMain = useSelector(selectSkipMain);
   const skipSearch = !skipMain;
   const searchTerm = useSelector(selectSearchTerm);
@@ -14,8 +14,21 @@ export const Content = () => {
   // const sortTerm = useSelector(selectSort);
   const popularResult = useGetPopularQuery('', {skip: skipMain});
   const searchResult = useGetSearchTermQuery(searchTerm, {skip: skipSearch});
+  const filteredResult = useGetPopularQuery('',{skip:skipMain,
+    selectFromResult: ({data}) => ({
+      data: data?.filter((post) => post.media?.type === filterTerm)
+    }),
+    }
+  );
+  const filteredSearchedResult = useGetSearchTermQuery(searchTerm,{skip:skipSearch,
+    selectFromResult: ({data}) => ({
+      data: data?.filter((post) => post.media.type === filterTerm)
+    }),
+    }
+  );
   
-  const result = skipMain ? searchResult : popularResult;
+  const result = !skipMain&&filterTerm ? filteredResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?filteredSearchedResult: popularResult;
+  
 
   if (result.isError || result.rejected) return <div>An error has occured!</div>;
 
@@ -29,29 +42,8 @@ export const Content = () => {
     </div>
   )
 
- const filterAndSort = data => {
-    setTimeout(() => dispatch(setFilterTypes([...new Set(result.data.map(x => x.media.type))])), 0)
-    let newData = data;
-
-    // if (filter && sort) {
-    //   newData = data.filter(x => filterTerm.includes(x.media.type)).sort(x => {});
-    //   return newData;
-    // }
-  
-    if (filterTerm) {
-      newData = data.filter(x => filterTerm.includes(x.media.type));
-      return newData;
-    }
-  
-    // if (sort) {
-    //   newData = data.sort(x => {});
-    //   return newData;
-    // }
-  
-    return newData;
-  }
-
-  const postData = filterAndSort(result.data)
+  const data = result.data;
+  const postData = data;
 
   return (
     <div id="content">
