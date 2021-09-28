@@ -1,4 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import numeral from 'numeral';
 
 const getDate = post => {
   const date = new Date(post.data.created_utc * 1000)
@@ -10,19 +11,14 @@ const getDate = post => {
   }
 }
 
-const abbreviateNumber = value => {
-  if (value > 999) {
-    var suffixes = ["", "k", "m"];
-    var suffixNum = Math.floor((""+value).length/3);
-    var shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
-    if (shortValue % 1 !== 0) {
-        shortValue = shortValue.toFixed(1);
-    }
-    return shortValue+suffixes[suffixNum];
-  } else {
-    return value;
+const abbreviateNumber = num => {
+  if (num > 999) {
+    return numeral(num).format('0.0a')
   }
+
+  return num
 }
+
 const getGalleryImages = post => {
   let obj = post.data.media_metadata;
   let image_urls = [];
@@ -93,7 +89,9 @@ const parseData = posts => {
       info: {
         title: post.data.title,
         upvotes: post.data.score,
+        display_upvotes: abbreviateNumber(post.data.score),
         comments: post.data.num_comments,
+        display_comments: abbreviateNumber(post.data.num_comments),
         subreddit_url: `https://reddit.com/${post.data.subreddit_name_prefixed}`,
         subreddit_prefix: post.data.subreddit_name_prefixed,
         permalink: post.data.permalink,

@@ -16,13 +16,15 @@ export const Filter = () => {
     dispatch(setFilter(newFilter));
   };
 
+
+
   return (
     <Dropdown>
       <Dropdown.Toggle id="filter-dropdown">
         Filter
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {types.map((type, i) => {
+        {['Image', 'Video', 'Gif', 'Gallery', 'Social', 'Other'].map((type, i) => {
           return (
             <Dropdown.Item 
               as="button"
@@ -30,6 +32,7 @@ export const Filter = () => {
               key={i}
               value={type}
               active={activeType === type}
+              disabled={!types.includes(type)}
             >
               {type}
             </Dropdown.Item>

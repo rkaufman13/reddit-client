@@ -29,7 +29,7 @@ export const Sort = () => {
               value={type}
               active={activeType === type}
             >
-              {type.toUpperCase()}
+              {`${type[0].toUpperCase()}${type.slice(1)}`}
             </Dropdown.Item>
           )
         })}
