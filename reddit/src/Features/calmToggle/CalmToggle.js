@@ -10,8 +10,17 @@ export const CalmToggle = () => {
   setTimeout(() => dispatch(setToggle(on)), 0);
   
   return (
-    <div id="calm-toggle">
-      Calm
+    <div id="calm-toggle" className="align-middle">
+      <Form.Label
+      sm="2"
+      
+      style={{marginRight:"1em","marginBottom":0, display:!on?"inline":"none"}}
+      >Calm</Form.Label>
+        <Form.Label
+      sm="2"
+      
+      style={{"marginBottom":0, display:on?"inline":"none"}}
+      >Calmer</Form.Label>
       <Form.Check 
         id="switchEnabled"
         type="switch"

@@ -83,6 +83,7 @@ const getMediaDetails = post => {
 };
 
 const parseData = posts => {
+
   return posts.map(post => {
     return {
       info: {

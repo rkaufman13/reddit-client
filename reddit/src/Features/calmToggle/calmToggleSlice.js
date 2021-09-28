@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const calmToggleSlice = createSlice({
   name: 'calmToggle',
-  initialState: true,
+  initialState: false,
   reducers: {
     setToggle: (state, action) => {
       return action.payload
