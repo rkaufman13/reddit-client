@@ -17,7 +17,9 @@ const filterAndSort = (data, filterTerm, sortTerm) => {
   }
 
   if (sortTerm) {
-    return data?.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+
+//  return data?.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+
   }
 
   return data
@@ -48,7 +50,7 @@ export const Content = () => {
   dispatch(setFilterTypes([...new Set(popularResult.data?.map(x => x.media.type))]));
   
   const result = !skipMain&&filterTerm ? determineResult:skipMain&&!filterTerm? searchResult :skipMain&&filterTerm?determineSearchResult: popularResult;
-  
+  console.log(result)
   if (result.isError || result.rejected) return <div>An error has occured!</div>;
 
   if (result.isLoading || result.isFetching) return (
@@ -61,8 +63,11 @@ export const Content = () => {
     </div>
   )
 
-  const postData = result.data;
-
+  const postData = [...result.data];
+  //sorting is by its lonesome down here because of Redux's rules of immutability--we need to get the data into a new array before we can sort it. The filter functions above work without this spreaded array because they return a new array.
+  if (sortTerm){
+  postData.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+  }
   return (
     <div id="content">
       {
