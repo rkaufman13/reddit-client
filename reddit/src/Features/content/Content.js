@@ -72,7 +72,7 @@ export const Content = () => {
       : skipMain && filterTerm
       ? determineSearchResult
       : popularResult;
-  console.log(result);
+  
   if (result.isError || result.rejected)
     return <div>An error has occured!</div>;
 

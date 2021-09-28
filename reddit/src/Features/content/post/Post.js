@@ -13,6 +13,8 @@ import { useGetCommentsQuery } from '../../../services/reddit';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCalmToggle } from '../../calmToggle/calmToggleSlice';
+import { Button } from 'react-bootstrap';
+import {PostBody} from './PostBody'
 
 
 const PostHeader = props => {
@@ -40,26 +42,26 @@ const PostHeader = props => {
 };
 
 const Comments = props => {
+  let text = "";
   const comments = useGetCommentsQuery(props.info.permalink)
-
   if (comments.error) return <h1>There was an error!</h1>
-
   if (comments.isLoading) return <h1>Loading...</h1>
-
+if (props.data?.selftext) text = props.data.selftext;
   return (
-    comments.data.map((x, i) => {
-      console.log(x[i])
+    <>{text}<br/>
+    {comments.data.map((x, i) => {
+      
       return <div>
-        <p id="comment">{x[i]}</p>
+        <p id="comment" key={i}>{x[i]} <em>—{x.author}</em></p>
         <ul>
         {
-          x.replies.map(x => {
-            return <li id="replies">{x}</li>
+          x.replies.map((x,i) => {
+            return <li id="replies" key={i}>{x}</li>
           })
         }
         </ul>
       </div>
-    })
+    })}</>
   )
 };
 
@@ -75,14 +77,14 @@ const PostFooter = props => {
     <>
       <div id="footer">
         <div id="post_url">
-          <a href={props.info.post_url} target="_blank" rel="noreferrer">Visit Post</a>
+          <Button onClick={() => setShow(true)}>See Post</Button>
         </div>
         <div id="comments-votes">
           <div id="votes">
             <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
             {props.info.display_upvotes}
           </div>
-          <div id="comments" onClick={() => setShow(true)}>
+          <div id="comments" >
             <img id="comments-votes-icon" src={commentsIcon} alt='' />
             {props.info.display_comments}
           </div>
@@ -100,7 +102,8 @@ const PostFooter = props => {
       >
         <Modal.Header closeVariant="white" closeButton></Modal.Header>
         <Modal.Body>
-        {show ? <Comments info={props.info}/> : ''}
+        {show ?<> <PostBody data={props}/>
+        <Comments info={props.info}/></> : ''}
         </Modal.Body>
       </Modal>
     </>
