@@ -1,6 +1,5 @@
 import {setToggle,selectCalmToggle} from './calmToggleSlice';
 import { Form } from 'react-bootstrap';
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './calmToggle.css';
 
@@ -25,7 +24,7 @@ export const CalmToggle = () => {
         id="switchEnabled"
         type="switch"
         checked={on}
-        onChange={() => dispatch(setToggle(on)) }
+        onChange={() => dispatch(setToggle(!on)) }
       />
     </div>
   )

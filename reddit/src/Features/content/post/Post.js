@@ -41,23 +41,38 @@ const PostHeader = props => {
   )
 };
 
-const Comments = props => {
+const PostBody = props => {
   let text = "";
+  props.info?.text? text = marked(props.info.text):text=marked(props.info.title);
+
+  return (
+    <>
+    <blockquote className="blockquote" dangerouslySetInnerHTML={{__html:text}}/><br/>
+    </>
+  )
+}
+
+const Comments = props => {
+  
   const comments = useGetCommentsQuery(props.info.permalink)
   if (comments.error) return <h1>There was an error!</h1>
   if (comments.isLoading) return <h1>Loading...</h1>
-if (props.info?.text) text = marked(props.info.text);
+ 
 
   return (
-    <><blockquote className="blockquote" dangerouslySetInnerHTML={{__html:text}}/><br/><hr/><br/>
+    <>
     {comments.data.map((x, i) => {
       
+      const renderedComment = marked(x[i]) + " <em>—" + x.author + "</em>";
       return <div>
-        <p id="comment" key={i}>{x[i]} <em>—{x.author}</em></p>
+        <hr/>
+        <p id="comment" key={i} dangerouslySetInnerHTML={{__html:renderedComment}}/>
+        
         <ul>
         {
           x.replies.map((x,i) => {
-            return <li id="replies" key={i}>{x}</li>
+            const renderedReply = marked(x)
+            return <li id="replies" key={i}><p style={{display:"inline"}} dangerouslySetInnerHTML={{__html:renderedReply}}/></li>
           })
         }
         </ul>
@@ -103,7 +118,7 @@ const PostFooter = props => {
       >
         <Modal.Header closeVariant="white" closeButton><Modal.Title><a href={props.info.post_url} target="_blank" rel="noreferrer">visit original post</a></Modal.Title></Modal.Header>
         <Modal.Body>
-        {show ?<Comments info={props.info}/> : ''}
+        {show ?<><PostBody info={props.info} media={props.media}/><Comments info={props.info}/></> : ''}
         </Modal.Body>
       </Modal>
     </>
