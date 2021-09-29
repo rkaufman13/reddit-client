@@ -14,7 +14,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCalmToggle } from '../../calmToggle/calmToggleSlice';
 import { Button } from 'react-bootstrap';
-import {PostBody} from './PostBody'
+import marked from 'marked';
 
 
 const PostHeader = props => {
@@ -46,9 +46,10 @@ const Comments = props => {
   const comments = useGetCommentsQuery(props.info.permalink)
   if (comments.error) return <h1>There was an error!</h1>
   if (comments.isLoading) return <h1>Loading...</h1>
-if (props.data?.selftext) text = props.data.selftext;
+if (props.info?.text) text = marked(props.info.text);
+
   return (
-    <>{text}<br/>
+    <><blockquote className="blockquote">{text}</blockquote><br/><hr/><br/>
     {comments.data.map((x, i) => {
       
       return <div>
@@ -100,10 +101,9 @@ const PostFooter = props => {
         centered
         scrollable
       >
-        <Modal.Header closeVariant="white" closeButton></Modal.Header>
+        <Modal.Header closeVariant="white" closeButton><Modal.Title><a href={props.info.post_url} target="_blank" rel="noreferrer">visit original post</a></Modal.Title></Modal.Header>
         <Modal.Body>
-        {show ?<> <PostBody data={props}/>
-        <Comments info={props.info}/></> : ''}
+        {show ?<Comments info={props.info}/> : ''}
         </Modal.Body>
       </Modal>
     </>
@@ -150,11 +150,13 @@ export const RedditVideo = (props) => {
 
 export const RedditComments = (props) => {
   return (
+    
     <div className="post reddit-comments">
       <PostHeader info={props.info} />
       <img id="comments-post-logo" src={commentsPostLogo} alt='' />
       <PostFooter info={props.info} />
     </div>
+    
   )
 }
 
