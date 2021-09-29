@@ -49,7 +49,7 @@ const Comments = props => {
 if (props.info?.text) text = marked(props.info.text);
 
   return (
-    <><blockquote className="blockquote">{text}</blockquote><br/><hr/><br/>
+    <><blockquote className="blockquote" dangerouslySetInnerHTML={{__html:text}}/><br/><hr/><br/>
     {comments.data.map((x, i) => {
       
       return <div>
