@@ -32,7 +32,7 @@ const filterAndSort = (data, filterTerm, sortTerm) => {
   }
 
   if (sortTerm) {
-    //  return data?.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+    return data.slice().sort((a, b) => b.info[sortTerm] - a.info[sortTerm]);
   }
 
   return data;
@@ -45,14 +45,18 @@ export const Content = () => {
   const searchTerm = useSelector(selectSearchTerm);
   const filterTerm = useSelector(selectFilter);
   const sortTerm = useSelector(selectSort);
+
   const popularResult = useGetPopularQuery("", { skip: skipMain });
+  
   const searchResult = useGetSearchTermQuery(searchTerm, { skip: skipSearch });
+  
   const determineResult = useGetPopularQuery("", {
     skip: skipMain,
     selectFromResult: ({ data }) => ({
       data: filterAndSort(data, filterTerm, sortTerm),
     }),
   });
+  
   const determineSearchResult = useGetSearchTermQuery(searchTerm, {
     skip: skipSearch,
     selectFromResult: ({ data }) => ({
@@ -65,13 +69,16 @@ export const Content = () => {
   );
 
   const result =
-    !skipMain && filterTerm
+    !skipMain && !filterTerm
+      ? determineResult
+      : !skipMain && filterTerm
       ? determineResult
       : skipMain && !filterTerm
-      ? searchResult
+      ? determineSearchResult
       : skipMain && filterTerm
       ? determineSearchResult
-      : popularResult;
+      : determineResult;
+
 
   if (result.isError || result.rejected)
     return <div>An error has occured!</div>;
@@ -85,11 +92,8 @@ export const Content = () => {
       </div>
     );
 
-  const postData = [...result.data];
-  //sorting is by its lonesome down here because of Redux's rules of immutability--we need to get the data into a new array before we can sort it. The filter functions above work without this spreaded array because they return a new array.
-  if (sortTerm) {
-    postData.sort((a, b) => a.info[sortTerm] - b.info[sortTerm]);
-  }
+  const postData = result.data;
+
   return (
     <div id="content">
       {postData.map((post, i) => {

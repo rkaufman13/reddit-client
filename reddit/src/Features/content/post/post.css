@@ -10,10 +10,15 @@
   background-color: 
   #23272a;
   margin-top: 10px;
+  padding: 0.5em;
 }
 
 .post h2 {
-  font-size: 18px;
+  font-size: 24px;
+}
+
+.post .date {
+  margin-left:1em;
 }
 
 .media {
