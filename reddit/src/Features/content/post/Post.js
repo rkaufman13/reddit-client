@@ -20,25 +20,25 @@ import marked from 'marked';
 const PostHeader = props => {
   const calm = useSelector(selectCalmToggle);
 
-  if (calm) {
+  
     return (
     <>
       <div id="spacer"></div>
       <h2>{props.info.title}</h2>
     </>
     )
-  }
+  
 
-  return (
-    <div id="header">
-      <div id="metadata">
-        <img id="reddit-logo-small" src={redditLogo} alt='' />
-        <a href={props.info.subreddit_url} target="_blank" rel="noreferrer">{props.info.subreddit_prefix}</a>
-        <span>Posted on {props.info.date_time.date} at {props.info.date_time.time}</span>
-      </div>
-      <h2>{props.info.title}</h2>
-    </div>
-  )
+  // return (
+  //   <div id="header">
+  //     <div id="metadata">
+  //       <img id="reddit-logo-small" src={redditLogo} alt='' />
+  //       <a href={props.info.subreddit_url} target="_blank" rel="noreferrer">{props.info.subreddit_prefix}</a>
+  //       <span>Posted on {props.info.date_time.date} at {props.info.date_time.time}</span>
+  //     </div>
+  //     <h2>{props.info.title}</h2>
+  //   </div>
+  // )
 };
 
 const PostBody = props => {
@@ -83,18 +83,12 @@ const Comments = props => {
 
 const PostFooter = props => {
   const [show, setShow] = useState(false);
-  const calm = useSelector(selectCalmToggle);
 
-  if (calm) {
-    return <div id="spacer"></div>
-  }
 
   return (
     <>
       <div id="footer">
-        <div id="post_url">
-          <Button onClick={() => setShow(true)}>See Post</Button>
-        </div>
+    
         <div id="comments-votes">
           <div id="votes">
             <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
@@ -104,6 +98,12 @@ const PostFooter = props => {
             <img id="comments-votes-icon" src={commentsIcon} alt='' />
             {props.info.display_comments}
           </div>
+          <div class="date">
+            {props.info.date_time.date}
+          </div>
+        </div>
+          <div id="post_url">
+          <Button onClick={() => setShow(true)}>See Post</Button>
         </div>
       </div>
   
@@ -168,7 +168,7 @@ export const RedditComments = (props) => {
     
     <div className="post reddit-comments">
       <PostHeader info={props.info} />
-      <img id="comments-post-logo" src={commentsPostLogo} alt='' />
+   
       <PostFooter info={props.info} />
     </div>
     
