@@ -84,17 +84,16 @@ const Comments = props => {
 const PostFooter = props => {
   const [show, setShow] = useState(false);
 
-
   return (
     <>
-      <div id="footer">
+      <div className="footer">
     
-        <div id="comments-votes">
+        <div className="comments-votes">
           <div id="votes">
             <img id="comments-votes-icon" src={upvotesIcon} alt=''/>
             {props.info.display_upvotes}
           </div>
-          <div id="comments" >
+          <div className="comments" >
             <img id="comments-votes-icon" src={commentsIcon} alt='' />
             {props.info.display_comments}
           </div>
@@ -127,24 +126,26 @@ const PostFooter = props => {
 
 export const RedditImage = (props) => {
   return (
-    <div className="post reddit-image">
+    <div className={`post reddit-image ${props.className}`}>
       <PostHeader info={props.info} />
+      <div className="wrapper">
       <div className="media">
         <img 
-          className="media"
-          id="reddit-image" 
+          className="reddit_image"
           src={props.media_url} 
           alt=''/>
       </div>
       <PostFooter info={props.info} />
+    </div>
     </div>
   );
 };
 
 export const RedditVideo = (props) => {
   return (
-    <div className="post reddit-video">
+    <div className={`post reddit-video ${props.className}`}>
       <PostHeader info={props.info} />
+      <div className="wrapper">
       <div className="media">
       <ReactPlayer 
         controls
@@ -159,6 +160,7 @@ export const RedditVideo = (props) => {
       />
       </div>
        <PostFooter info={props.info} />
+    </div>
     </div>
   );
 };

@@ -60,12 +60,18 @@ const getMediaDetails = post => {
   if (redditVideo) {
     media.type = "Video";
     media.url = post.data.media.reddit_video.dash_url;
+    media.width=post.data.media.reddit_video.width;
+    media.height=post.data.media.reddit_video.height;
   } else if (redditImage) {
     media.type = "Image";
     media.url = post.data.url;
+    media.width=post.data.preview.images[0].source.width;
+    media.height=post.data.preview.images[0].source.height;
   } else if (redditGif) {
     media.type = "Gif";
     media.url = post.data.url;
+    media.width=post.data.preview.images[0].source.width;
+    media.height=post.data.preview.images[0].source.height;
   } else if (redditComments) {
     media.type = "Discussion";
     media.url = "reddit_logo";
@@ -157,3 +163,4 @@ export const redditApi = createApi({
 
 // Export hooks for usage in functional components
 export const { useGetPopularQuery, useGetSearchTermQuery, useGetCommentsQuery } = redditApi;
+export  { getDate, abbreviateNumber};
