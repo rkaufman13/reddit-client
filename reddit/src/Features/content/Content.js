@@ -87,7 +87,7 @@ const result = !skipMain ? popularResult : searchResult
       {postData.map((post, i) => {
         if (["Image", "Gif"].includes(post.media.type)) {
           let className;
-          if (post.media.width/post.media.height<0.8){
+          if (post.media.width/post.media.height<0.85){
             className="portrait";
           }
           else {className="landscape"}
@@ -104,7 +104,7 @@ const result = !skipMain ? popularResult : searchResult
 
         if (post.media.type === "Video") {
           let className;
-          if (post.media.width/post.media.height<0.8){
+          if (post.media.width/post.media.height<0.85){
             className="portrait";
           }
           else {className="landscape"}
