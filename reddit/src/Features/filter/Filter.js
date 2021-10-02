@@ -24,7 +24,7 @@ export const Filter = () => {
         Filter
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {['Image', 'Video', 'Gif', 'Gallery', 'Social', 'Other'].map((type, i) => {
+        {['Image', 'Video', 'Gif', 'Gallery', 'Social', 'Discussion', 'Other'].map((type, i) => {
           return (
             <Dropdown.Item 
               as="button"

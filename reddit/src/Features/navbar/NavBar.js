@@ -29,7 +29,7 @@ export const NavBar = () => {
             <Nav className="me-auto">
               <Filter />
               <Sort />
-              <CalmToggle />
+              
             </Nav>
           </Navbar.Collapse>
         </Container>

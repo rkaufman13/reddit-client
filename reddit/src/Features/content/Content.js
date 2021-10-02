@@ -24,7 +24,7 @@ const filterAndSort = (data, filterTerm, sortTerm) => {
   if (filterTerm && sortTerm) {
     return data
       ?.filter((x) => x.media.type === filterTerm)
-      .sort((a, b) => a.info[sortTerm] - b.info[sortTerm]);
+      .sort((a, b) => b.info[sortTerm] - a.info[sortTerm]);
   }
 
   if (filterTerm) {
@@ -32,8 +32,9 @@ const filterAndSort = (data, filterTerm, sortTerm) => {
   }
 
   if (sortTerm) {
-    //  return data?.sort((a, b) => a.info[sortTerm] - b.info[sortTerm])
+    return data.slice().sort((a, b) => b.info[sortTerm] - a.info[sortTerm]);
   }
+
 
   return data;
 };
@@ -45,6 +46,7 @@ export const Content = () => {
   const searchTerm = useSelector(selectSearchTerm);
   const filterTerm = useSelector(selectFilter);
   const sortTerm = useSelector(selectSort);
+
   const popularResult = useGetPopularQuery("", { skip: skipMain });
   const searchResult = useGetSearchTermQuery(searchTerm, { skip: skipSearch });
   const determineResult = useGetPopularQuery("", {
@@ -64,15 +66,8 @@ export const Content = () => {
     setFilterTypes([...new Set(popularResult.data?.map((x) => x.media.type))])
   );
 
-  const result =
-    !skipMain && filterTerm
-      ? determineResult
-      : skipMain && !filterTerm
-      ? searchResult
-      : skipMain && filterTerm
-      ? determineSearchResult
-      : popularResult;
-  console.log(result);
+const result = !skipMain ? popularResult : searchResult
+
   if (result.isError || result.rejected)
     return <div>An error has occured!</div>;
 
@@ -85,11 +80,8 @@ export const Content = () => {
       </div>
     );
 
-  const postData = [...result.data];
+    const postData = filterAndSort(result.data, filterTerm, sortTerm);
   //sorting is by its lonesome down here because of Redux's rules of immutability--we need to get the data into a new array before we can sort it. The filter functions above work without this spreaded array because they return a new array.
-  if (sortTerm) {
-    postData.sort((a, b) => a.info[sortTerm] - b.info[sortTerm]);
-  }
   return (
     <div id="content">
       {postData.map((post, i) => {

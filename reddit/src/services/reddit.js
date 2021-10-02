@@ -98,7 +98,8 @@ const parseData = posts => {
         post_url: `https://reddit.com/${post.data.permalink}`,
         url: post.data.url,
         date_time: getDate(post),
-        date: post.data.created_utc
+        date: post.data.created_utc,
+        text:post.data.selftext,
       },
       media: getMediaDetails(post)
     }
@@ -106,18 +107,23 @@ const parseData = posts => {
 };
 
 const parseComments = data => {
+  
   const topLevelComments = data.filter(obj => obj.kind === 't1')
   const comments = []
   
   topLevelComments.forEach((comment, i) => {
     comments.push({})
-    comments[i][i] = comment.data.body
+    comments[i][i] = comment.data.body;
+    comments[i].author = comment.data.author;
     comments[i].replies = []
     
     if (comment.data.replies !== '') {
+      
       let replies = comment.data.replies.data.children.filter(reply => reply.kind === 't1')
+      replies = replies.filter(reply => reply.data.author.toLowerCase() !== "automoderator")
       replies.forEach(reply => {
-        comments[i].replies.push(reply.data.body)
+        
+        comments[i].replies.push(`${reply.data.body} –${reply.data.author}`)
       })
     }
   })
