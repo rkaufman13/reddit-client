@@ -157,3 +157,5 @@ export const redditApi = createApi({
 
 // Export hooks for usage in functional components
 export const { useGetPopularQuery, useGetSearchTermQuery, useGetCommentsQuery } = redditApi;
+//export helper functions for use in testing
+export {abbreviateNumber,getDate}
