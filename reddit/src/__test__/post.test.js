@@ -1,5 +1,4 @@
-import { screen, render } from "@testing-library/react";
-import { unmountComponentAtNode } from "react-dom";
+import { screen } from "@testing-library/react";
 import { RedditImage } from "../Features/content/post/Post";
 import { abbreviateNumber } from "../services/reddit";
 import React from "react";
@@ -7,8 +6,9 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { setupServer } from "msw/node";
 import { handlers } from "./serverHandlers";
-import { render as renderWithProviders } from "./testUtils";
-import { Content } from "../Features/content/Content";
+//import { render as renderWithProviders } from "./testUtils";
+import { render } from "./testUtils";
+import App from "../Components/App";
 
 const server = setupServer(...handlers);
 
@@ -81,17 +81,14 @@ test("posts render with fake data", () => {
   );
 });
 
-test("user can click to expand a post, then click the x to hide it", async () => {
-  renderWithProviders(<App />);
+//now let's use some real
 
-  const seePostButton = screen.getByRole("button");
-  const closePostButton = screen.getAllByRole("button", { hidden: true });
+test("user can click to expand a post, then click the x to hide it", async () => {
+  render(<App />);
+
+  const seePostButton = screen.getAllByRole("button")[0];
+  const closePostButton = screen.getAllByRole("button", { hidden: true })[0];
   expect(seePostButton).toBeInTheDocument();
   userEvent.click(seePostButton);
-  expect(seePostButton).not.toBeVisible();
-});
-
-test("content page renders", () => {
-  render(<Content></Content>);
-  screen.debug();
+  expect(closePostButton).toBeVisible();
 });
