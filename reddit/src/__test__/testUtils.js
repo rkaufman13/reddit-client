@@ -30,7 +30,7 @@ import calmToggleSliceReducer from "../Features/calmToggle/calmToggleSlice";
 function render(
   ui,
   {
-    preloadedState,
+    // preloadedState,
     store = configureStore({
       reducer: {
         searchTerm: searchTermSliceReducer,
@@ -39,7 +39,9 @@ function render(
         calmToggle: calmToggleSliceReducer,
         [redditApi.reducerPath]: redditApi.reducer,
       },
-      preloadedState,
+      middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat([redditApi.middleware]),
+      //   preloadedState,
     }),
     ...renderOptions
   } = {}

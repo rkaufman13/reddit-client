@@ -1,29 +1,33 @@
 import React from "react";
 import { screen } from "@testing-library/react";
-import { render } from "./testUtils";
-import { Provider } from "react-redux";
-import { store } from "../store.js";
 import App from "../Components/App";
 import { setupServer } from "msw/node";
 import { handlers } from "./serverHandlers";
+import { render } from "./testUtils";
 
 const server = setupServer(...handlers);
 
-beforeAll(() => server.listen());
+beforeAll(() => {
+  server.listen({
+    onUnhandledRequest(req) {
+      console.error(
+        "Found an unhandled %s request to %s",
+        req.method,
+        req.url.href
+      );
+    },
+  });
+});
 
 afterEach(() => server.resetHandlers());
 
 afterAll(() => server.close());
 
-beforeEach(() => {
-  jest.spyOn(console, "warn").mockImplementation(() => {});
-});
+beforeEach(() => {});
 
 test("renders app successfully", async () => {
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>
-  );
+  render(<App />);
   expect(await screen.findByText(/calm reddit/i)).toBeInTheDocument();
+  const headers = await screen.findAllByRole("heading", { level: 2 });
+  expect(headers.length).toEqual(25);
 });

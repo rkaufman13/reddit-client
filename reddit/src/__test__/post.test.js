@@ -1,27 +1,34 @@
-import { screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import { unmountComponentAtNode } from "react-dom";
 import { RedditImage } from "../Features/content/post/Post";
 import { abbreviateNumber } from "../services/reddit";
 import React from "react";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import * as redux from "react-redux";
-import { render } from "./testUtils";
+import { setupServer } from "msw/node";
+import { handlers } from "./serverHandlers";
+import { render as renderWithProviders } from "./testUtils";
 import { Content } from "../Features/content/Content";
 
-let container = null;
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+const server = setupServer(...handlers);
+
+beforeAll(() => {
+  server.listen({
+    onUnhandledRequest(req) {
+      console.error(
+        "Found an unhandled %s request to %s",
+        req.method,
+        req.url.href
+      );
+    },
+  });
 });
 
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
-});
+afterEach(() => server.resetHandlers());
+
+afterAll(() => server.close());
+
+beforeEach(() => {});
 
 // test test to make sure the tests are working
 function sum(a, b) {
@@ -58,7 +65,7 @@ const fakeImagePostData = {
   },
 };
 
-test("posts render", () => {
+test("posts render with fake data", () => {
   const post = fakeImagePostData;
   const i = 1;
 
@@ -67,16 +74,15 @@ test("posts render", () => {
       key={i}
       info={post.info}
       media_url={post.media.url ? post.media.url : null}
-    />,
-    container
+    />
   );
   expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent(
     `${fakeImagePostData.info.title}`
   );
 });
 
-test("user can click to expand a post, then click the x to hide it", () => {
-  render(<RedditImage />, container);
+test("user can click to expand a post, then click the x to hide it", async () => {
+  renderWithProviders(<App />);
 
   const seePostButton = screen.getByRole("button");
   const closePostButton = screen.getAllByRole("button", { hidden: true });
