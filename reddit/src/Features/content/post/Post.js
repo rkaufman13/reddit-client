@@ -88,11 +88,19 @@ const PostFooter = (props) => {
       <div id="footer">
         <div id="comments-votes">
           <div id="votes">
-            <img id="comments-votes-icon" src={upvotesIcon} alt="" />
+            <img
+              className="comments-votes-icon"
+              src={upvotesIcon}
+              alt={`Upvotes: ${props.info.display_upvotes}`}
+            />
             {props.info.display_upvotes}
           </div>
           <div id="comments">
-            <img id="comments-votes-icon" src={commentsIcon} alt="" />
+            <img
+              className="comments-votes-icon"
+              src={commentsIcon}
+              alt={`Comments: ${props.info.display_comments}`}
+            />
             {props.info.display_comments}
           </div>
           <div className="date">{props.info.date_time.date}</div>

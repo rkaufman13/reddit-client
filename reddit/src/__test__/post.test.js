@@ -6,8 +6,8 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { setupServer } from "msw/node";
 import { handlers } from "./serverHandlers";
-//import { render as renderWithProviders } from "./testUtils";
 import { render } from "./testUtils";
+import { waitFor } from "@testing-library/react";
 import App from "../Components/App";
 
 const server = setupServer(...handlers);
@@ -81,14 +81,25 @@ test("posts render with fake data", () => {
   );
 });
 
-//now let's use some real
+//now let's use some real data
 
 test("user can click to expand a post, then click the x to hide it", async () => {
   render(<App />);
-
   const seePostButton = screen.getAllByRole("button")[0];
   const closePostButton = screen.getAllByRole("button", { hidden: true })[0];
   expect(seePostButton).toBeInTheDocument();
   userEvent.click(seePostButton);
   expect(closePostButton).toBeVisible();
+});
+
+test("sorting by upvotes puts the highest upvoted post at the top", async () => {
+  render(<App />);
+  const sortDropdown = screen.getAllByRole("button", {
+    value: "upvotes",
+  })[0];
+  userEvent.click(sortDropdown);
+  const topPost = await screen.findAllByAltText("Upvotes: 114.7k")[0];
+  await waitFor(() => {
+    expect(topPost).toHaveAttribute("alt", "Upvotes: 114.7k");
+  });
 });

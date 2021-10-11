@@ -4,7 +4,9 @@ import App from "../Components/App";
 import { setupServer } from "msw/node";
 import { handlers } from "./serverHandlers";
 import { render } from "./testUtils";
+import { unmountComponentAtNode } from "react-dom";
 
+let container = null;
 const server = setupServer(...handlers);
 
 beforeAll(() => {

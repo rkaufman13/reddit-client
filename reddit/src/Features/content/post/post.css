@@ -7,8 +7,7 @@
   font-size: 18px;
   color: white;
   width: 100%;
-  background-color: 
-  #23272a;
+  background-color: #23272a;
   margin-top: 10px;
   padding: 0.5 em;
 }
@@ -18,7 +17,7 @@
 }
 
 .post .date {
-  margin-left:1em;
+  margin-left: 1em;
 }
 .media {
   display: flex;
@@ -79,7 +78,7 @@ span {
   cursor: default;
 }
 
-#comments-votes-icon {
+.comments-votes-icon {
   width: 40px;
   height: 40px;
 }
@@ -107,7 +106,7 @@ span {
 
 .other-media {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   width: 100%;
   align-items: center;
   margin-bottom: 10px;
@@ -133,16 +132,16 @@ span {
   background-color: #23272a;
 }
 
-#comment{
+#comment {
   font-weight: bold;
 }
 
-#replies{
+#replies {
   margin-left: 40px;
   margin-bottom: 10px;
 }
 
-#spacer{
+#spacer {
   height: 38px;
 }
 
@@ -181,4 +180,3 @@ span {
     opacity: 0;
   }
 }
-

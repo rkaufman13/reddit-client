@@ -7,6 +7,6 @@ const popularUrl = `${baseURL}/r/popular.json`;
 
 export const handlers = [
   rest.get(popularUrl, (req, res, ctx) => {
-    return res(ctx.json(popular), ctx.delay(150));
+    return res(ctx.json(popular), ctx.delay(5));
   }),
 ];
