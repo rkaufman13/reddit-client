@@ -19,6 +19,7 @@ import {
 import "./content.css";
 import { selectFilter, setFilterTypes } from "../filter/filterSlice.js";
 import { selectSort } from "../sort/sortSlice.js";
+import LazyLoad from "react-lazyload";
 
 const filterAndSort = (data, filterTerm, sortTerm) => {
   if (filterTerm && sortTerm) {
@@ -34,6 +35,7 @@ const filterAndSort = (data, filterTerm, sortTerm) => {
   if (sortTerm) {
   return data?.slice().sort((a, b) => b.info[sortTerm] - a.info[sortTerm]);
   }
+
   return data;
 };
 
@@ -63,7 +65,7 @@ export const Content = () => {
     setFilterTypes([...new Set(popularResult.data?.map((x) => x.media.type))])
   );
 
-const result = !skipMain ? popularResult : searchResult
+  const result = !skipMain ? popularResult : searchResult;
 
   if (result.isError || result.rejected)
     return <div>An error has occured!</div>;
@@ -77,74 +79,80 @@ const result = !skipMain ? popularResult : searchResult
       </div>
     );
 
+
     const postData = filterAndSort(result.data, filterTerm, sortTerm);
   
+
   return (
     <div id="content">
-      {postData.map((post, i) => {
-        if (["Image", "Gif"].includes(post.media.type)) {
-          let className;
-          if (post.media.width/post.media.height<0.85){
-            className="portrait";
+      <LazyLoad offset={200}>
+        {postData.map((post, i) => {
+          if (["Image", "Gif"].includes(post.media.type)) {
+            let className;
+            if (post.media.width / post.media.height < 0.85) {
+              className = "portrait";
+            } else {
+              className = "landscape";
+            }
+
+            return (
+              <RedditImage
+                key={i}
+                info={post.info}
+                className={className}
+                media_url={post.media.url ? post.media.url : null}
+              />
+            );
           }
-          else {className="landscape"}
 
-          return (
-            <RedditImage
-              key={i}
-              info={post.info}
-              className={className}
-              media_url={post.media.url ? post.media.url : null}
-            />
-          );
-        }
+          if (post.media.type === "Video") {
+            let className;
+            if (post.media.width / post.media.height < 0.85) {
+              className = "portrait";
+            } else {
+              className = "landscape";
+            }
 
-        if (post.media.type === "Video") {
-          let className;
-          if (post.media.width/post.media.height<0.85){
-            className="portrait";
+            return (
+              <RedditVideo
+                key={i}
+                info={post.info}
+                className={className}
+                media_url={post.media.url ? post.media.url : null}
+              />
+            );
           }
-          else {className="landscape"}
 
-          return (
-            <RedditVideo
-              key={i}
-              info={post.info}
-              className={className}
-              media_url={post.media.url ? post.media.url : null}
-            />
-          );
-        }
+          if (post.media.type === "Discussion") {
+            return <RedditComments key={i} info={post.info} />;
+          }
 
-        if (post.media.type === "Discussion") {
-          return <RedditComments key={i} info={post.info} />;
-        }
+          if (post.media.type === "Gallery") {
+            return (
+              <RedditGallery
+                key={i}
+                info={post.info}
+                image_urls={post.media.image_urls}
+              />
+            );
+          }
 
-        if (post.media.type === "Gallery") {
-          return (
-            <RedditGallery
-              key={i}
-              info={post.info}
-              image_urls={post.media.image_urls}
-            />
-          );
-        }
+          if (post.media.type === "Social") {
+            return <Oembed key={i} info={post.info} html={post.media.html} />;
+          }
 
-        if (post.media.type === "Social") {
-          return <Oembed key={i} info={post.info} html={post.media.html} />;
-        }
-
-        if (post.media.type === "Other") {
-          return (
-            <Other
-              key={i}
-              info={post.info}
-              media_url={post.media.url ? post.media.url : null}
-            />
-          );
-        }
-        return null;
-      })}
+          if (post.media.type === "Other") {
+            return (
+              <Other
+                key={i}
+                info={post.info}
+                media_url={post.media.url ? post.media.url : null}
+              />
+            );
+          }
+          return null;
+        })}
+      </LazyLoad>
     </div>
   );
 };
