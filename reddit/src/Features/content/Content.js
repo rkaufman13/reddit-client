@@ -83,20 +83,34 @@ const result = !skipMain ? popularResult : searchResult
     <div id="content">
       {postData.map((post, i) => {
         if (["Image", "Gif"].includes(post.media.type)) {
+          let className;
+          if (post.media.width/post.media.height<0.85){
+            className="portrait";
+          }
+          else {className="landscape"}
+
           return (
             <RedditImage
               key={i}
               info={post.info}
+              className={className}
               media_url={post.media.url ? post.media.url : null}
             />
           );
         }
 
         if (post.media.type === "Video") {
+          let className;
+          if (post.media.width/post.media.height<0.85){
+            className="portrait";
+          }
+          else {className="landscape"}
+
           return (
             <RedditVideo
               key={i}
               info={post.info}
+              className={className}
               media_url={post.media.url ? post.media.url : null}
             />
           );

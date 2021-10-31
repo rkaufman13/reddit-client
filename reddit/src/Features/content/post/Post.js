@@ -85,8 +85,10 @@ const PostFooter = (props) => {
 
   return (
     <>
-      <div id="footer">
-        <div id="comments-votes">
+
+      <div className="footer">
+    
+        <div className="comments-votes">
           <div id="votes">
             <img
               className="comments-votes-icon"
@@ -95,12 +97,10 @@ const PostFooter = (props) => {
             />
             {props.info.display_upvotes}
           </div>
-          <div id="comments">
-            <img
-              className="comments-votes-icon"
-              src={commentsIcon}
-              alt={`Comments: ${props.info.display_comments}`}
-            />
+
+          <div className="comments" >
+            <img id="comments-votes-icon" src={commentsIcon} alt=  alt={`Comments: ${props.info.display_comments}`} />
+
             {props.info.display_comments}
           </div>
           <div className="date">{props.info.date_time.date}</div>
@@ -143,20 +143,28 @@ const PostFooter = (props) => {
 
 export const RedditImage = (props) => {
   return (
-    <div className="post reddit-image">
+    <div className={`post reddit-image ${props.className}`}>
       <PostHeader info={props.info} />
+      <div className="wrapper">
       <div className="media">
-        <img className="media" id="reddit-image" src={props.media_url} alt="" />
+
+        <img 
+          className="reddit_image"
+          src={props.media_url} 
+          alt=''/>
+
       </div>
       <PostFooter info={props.info} />
+    </div>
     </div>
   );
 };
 
 export const RedditVideo = (props) => {
   return (
-    <div className="post reddit-video">
+    <div className={`post reddit-video ${props.className}`}>
       <PostHeader info={props.info} />
+      <div className="wrapper">
       <div className="media">
         <ReactPlayer
           controls
@@ -171,6 +179,7 @@ export const RedditVideo = (props) => {
         />
       </div>
       <PostFooter info={props.info} />
+    </div>
     </div>
   );
 };
