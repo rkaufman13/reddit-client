@@ -33,7 +33,7 @@ const filterAndSort = (data, filterTerm, sortTerm) => {
   }
 
   if (sortTerm) {
-    return data.slice().sort((a, b) => b.info[sortTerm] - a.info[sortTerm]);
+  return data?.slice().sort((a, b) => b.info[sortTerm] - a.info[sortTerm]);
   }
 
   return data;
@@ -46,7 +46,6 @@ export const Content = () => {
   const searchTerm = useSelector(selectSearchTerm);
   const filterTerm = useSelector(selectFilter);
   const sortTerm = useSelector(selectSort);
-
   const popularResult = useGetPopularQuery("", { skip: skipMain });
   const searchResult = useGetSearchTermQuery(searchTerm, { skip: skipSearch });
   const determineResult = useGetPopularQuery("", {
@@ -80,8 +79,10 @@ export const Content = () => {
       </div>
     );
 
-  const postData = filterAndSort(result.data, filterTerm, sortTerm);
-  //sorting is by its lonesome down here because of Redux's rules of immutability--we need to get the data into a new array before we can sort it. The filter functions above work without this spreaded array because they return a new array.
+
+    const postData = filterAndSort(result.data, filterTerm, sortTerm);
+  
+
   return (
     <div id="content">
       <LazyLoad offset={200}>

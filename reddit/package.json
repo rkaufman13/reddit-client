@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.1.10",
     "bootstrap": "^5.1.1",
     "dangerously-set-html-content": "^1.0.9",
+    "marked": "^3.0.4",
     "numeral": "^2.0.6",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",
@@ -19,12 +20,13 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.1",
     "redux-logger": "^3.0.6",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "whatwg-fetch": "^3.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -44,5 +46,19 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/styleMock.js"
+    },
+    "automock": false,
+    "setupFilesAfterEnv": [
+      "./src/setupTests.js"
+    ]
+  },
+  "devDependencies": {
+    "msw": "^0.35.0",
+    "regenerator-runtime": "^0.13.9"
   }
 }
